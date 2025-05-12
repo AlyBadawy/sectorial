@@ -15,3 +15,18 @@ group :development do
   gem "rubocop-rails-omakase", require: false
   gem "rubocop-rspec", require: false
 end
+
+group :development, :test do
+  gem "brakeman", require: false
+  gem "capybara"
+  gem "database_cleaner"
+  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+  gem "dotenv-rails"
+  gem "factory_bot_rails"
+  gem "faker"
+  gem "pry-byebug"
+  gem "pry-rails"
+  gem "rspec-rails"
+  gem "shoulda-matchers"
+  gem "simplecov"
+end

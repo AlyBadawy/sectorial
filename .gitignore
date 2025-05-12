@@ -10,3 +10,9 @@
 /spec/dummy/tmp/
 
 .DS_Store
+
+
+*.gem
+
+/coverage/
+!/coverage/.keep
