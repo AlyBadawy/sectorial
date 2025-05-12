@@ -8,6 +8,8 @@ gem "puma"
 gem "sqlite3"
 
 group :development do
+  gem "fasterer"
+  gem "overcommit"
   gem "rubocop", require: false
   gem "rubocop-config-prettier", require: false
   gem "rubocop-performance", require: false
