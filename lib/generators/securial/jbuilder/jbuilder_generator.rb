@@ -14,7 +14,7 @@ module Securial
       private
 
       def attributes_names
-        attributes.map { |attr| attr.name }
+        attributes.map(&:name)
       end
     end
   end
