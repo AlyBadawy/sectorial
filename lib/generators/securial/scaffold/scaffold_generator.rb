@@ -1,13 +1,14 @@
 require "rails/generators"
+require "rails/generators/resource_helpers"
+require "rails/generators/named_base"
 
 module Securial
   module Generators
-    class ScaffoldGenerator < Rails::Generators::Base
+    class ScaffoldGenerator < Rails::Generators::NamedBase
       include Rails::Generators::ResourceHelpers
 
       source_root File.expand_path("templates", __dir__)
 
-      argument :name, type: :string
       argument :attributes, type: :array, default: [], banner: "field:type field:type"
 
       def run_scaffold
@@ -34,16 +35,28 @@ module Securial
           behavior: behavior,
           destination_root: Securial::Engine.root,
         )
+
+        # Generate request specs
+        template(
+          "request_spec.rb",
+          File.join("spec/requests/securial", "#{plural_table_name}_spec.rb")
+        )
+
+        # Generate routing specs
+        template(
+          "routing_spec.rb",
+          File.join("spec/routing/securial", "#{plural_table_name}_routing_spec.rb")
+        )
       end
 
       private
 
       def controller_class_name
-        name.classify.pluralize
+        class_name.pluralize
       end
 
       def controller_file_name
-        name.pluralize.underscore
+        file_name.pluralize
       end
 
       def attributes_names
@@ -52,10 +65,6 @@ module Securial
 
       def orm_class
         Rails::Generators::ActiveModel
-      end
-
-      def class_name
-        name.classify
       end
     end
   end
