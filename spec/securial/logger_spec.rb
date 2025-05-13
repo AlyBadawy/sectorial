@@ -3,6 +3,7 @@ require "ostruct"
 
 RSpec.describe Securial::Logger do
   let(:log_path) { Rails.root.join("log", "securial_test.log") }
+  let(:rails_root) { Pathname.new(File.expand_path("../dummy", __dir__)) }
 
   before do
     # Stub the Securial configuration for controlled tests
@@ -27,7 +28,8 @@ RSpec.describe Securial::Logger do
     context "when logging to file only" do
       before do
         allow(Securial.configuration).to receive(:log_to_file).and_return(true)
-        allow(Rails).to receive_message_chain(:root, :join).with("log", "securial.log").and_return(log_path)
+        allow(Rails).to receive(:root).and_return(rails_root)
+        allow(rails_root).to receive(:join).with("log", "securial.log").and_return(log_path)
       end
 
       it "writes log to file" do
@@ -54,9 +56,9 @@ RSpec.describe Securial::Logger do
 
     context "when logging to both file and stdout" do
       before do
-        allow(Securial.configuration).to receive(:log_to_file).and_return(true)
-        allow(Securial.configuration).to receive(:log_to_stdout).and_return(true)
-        allow(Rails).to receive_message_chain(:root, :join).with("log", "securial.log").and_return(log_path)
+        allow(Securial.configuration).to receive_messages(log_to_file: true, log_to_stdout: true)
+        allow(Rails).to receive(:root).and_return(rails_root)
+        allow(rails_root).to receive(:join).with("log", "securial.log").and_return(log_path)
       end
 
       it "writes to both destinations" do
@@ -69,10 +71,9 @@ RSpec.describe Securial::Logger do
       end
     end
 
-    context ".resolve_log_level" do
+    describe ".resolve_log_level" do
       it "returns the lower of the two log levels" do
-        allow(Securial.configuration).to receive(:file_log_level).and_return(:warn)
-        allow(Securial.configuration).to receive(:stdout_log_level).and_return(:debug)
+        allow(Securial.configuration).to receive_messages(file_log_level: :warn, stdout_log_level: :debug)
 
         level = described_class.resolve_log_level
         expect(level).to eq(::Logger::DEBUG)

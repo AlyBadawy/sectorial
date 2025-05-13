@@ -8,7 +8,7 @@ module Securial
       outputs = []
 
       if Securial.configuration.log_to_file
-        log_file = File.open(Rails.root.join("log", "securial.log"), "a")
+        log_file = Rails.root.join("log", "securial.log").open("a")
         log_file.sync = true
         outputs << log_file
       end

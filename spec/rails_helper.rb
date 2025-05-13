@@ -33,7 +33,7 @@ RSpec.configure do |config|
   config.include GeneratorSpec::TestCase, type: :generator
 
   FactoryBot.definition_file_paths = [
-    File.expand_path("factories", __dir__),
+    File.expand_path("factories", __dir__)
   ]
   FactoryBot.find_definitions
 
