@@ -124,12 +124,10 @@ module Securial
       def add_routes
         say_status(:routes, "routes", :cyan) unless Rails.env.test?
 
-        routes_path = Rails.env.test? ?
-          Rails.root.join("tmp/config/routes.rb") :
-          Engine.root.join("config/routes.rb")
+        routes_path = File.join(root_path, "config/routes.rb")
 
         route_config = "resources :#{plain_plural_name}"
-        template("request_spec.rb", routes_path, verbose: false) unless File.exist?(routes_path)
+        template("routes.rb", routes_path, verbose: false) unless File.exist?(routes_path)
 
         if behavior == :invoke
           inject_into_file routes_path,
@@ -137,7 +135,11 @@ module Securial
                            after: "defaults format: :json do\n",
                            verbose: !Rails.env.test?
         else
-          gsub_file routes_path, /^\s*#{route_config}\n/, ""
+          content = File.read(routes_path)
+
+          # Remove the route line and write back
+          new_content = content.gsub(/^\s*#{Regexp.escape(route_config)}\n/, "")
+          File.write(routes_path, new_content)
         end
       end
     end

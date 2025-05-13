@@ -11,9 +11,7 @@ RSpec.describe Securial::Generators::ScaffoldGenerator do
     allow(Securial::Engine).to receive(:root).and_return(Rails.root + "tmp/")
 
     # Clean up any previously generated files
-    FileUtils.rm_rf(Rails.root.join("tmp/app/controllers/securial"))
-    FileUtils.rm_rf(Rails.root.join("tmp/spec/requests/securial"))
-    FileUtils.rm_rf(Rails.root.join("tmp/spec/routing/securial"))
+    FileUtils.rm_rf(Rails.root.join("tmp"))
   end
 
   describe ".file_name" do
@@ -66,6 +64,15 @@ RSpec.describe Securial::Generators::ScaffoldGenerator do
         routing_spec_path = Rails.root.join("tmp/spec/routing/securial/posts_routing_spec.rb")
         expect(File).to exist(routing_spec_path)
       end
+
+      it "adds routes to the routes file" do
+        generator.run_scaffold
+        routes_path = Rails.root.join("tmp/config/routes.rb")
+        expect(File).to exist(routes_path)
+
+        routes_content = File.read(routes_path)
+        expect(routes_content).to include("resources :posts")
+      end
     end
 
     context "when removing scaffold" do
@@ -91,6 +98,17 @@ RSpec.describe Securial::Generators::ScaffoldGenerator do
         expect(File).not_to exist(Rails.root.join("tmp/app/controllers/securial/posts_controller.rb"))
         expect(File).not_to exist(Rails.root.join("tmp/spec/requests/securial/posts_spec.rb"))
         expect(File).not_to exist(Rails.root.join("tmp/spec/routing/securial/posts_routing_spec.rb"))
+      end
+
+      it "removes routes from the routes file" do
+        # Remove the debugger line
+        generator.run_scaffold
+
+        routes_path = Rails.root.join("tmp/config/routes.rb")
+        expect(File).to exist(routes_path)
+
+        routes_content = File.read(routes_path)
+        expect(routes_content).not_to include("resources :posts")
       end
     end
   end
