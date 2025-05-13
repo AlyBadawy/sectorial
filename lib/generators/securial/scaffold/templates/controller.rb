@@ -38,7 +38,7 @@ module Securial
     end
 
     def <%= singular_table_name %>_params
-      params.require(:<%= singular_table_name %>).permit(<%= attributes_names.map { |name| ":#{name}" }.join(', ') %>)
+      params.expect(<%= singular_table_name %>: [<%= attributes_names.map { |name| ":#{name}" }.join(', ') %>])
     end
   end
 end
