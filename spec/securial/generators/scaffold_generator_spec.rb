@@ -1,50 +1,174 @@
 require "rails_helper"
 require "generators/securial/scaffold/scaffold_generator"
 
-RSpec.describe Securial::Generators::ScaffoldGenerator, type: :generator do
-  destination File.expand_path("../../../../../tmp", __FILE__)
+RSpec.describe Securial::Generators::ScaffoldGenerator do
+  subject(:generator) { described_class.new([name, *attributes]) }
 
-  let(:rails_generators) { class_spy(Rails::Generators) }
+  let(:name) { "post" }
+  let(:attributes) { ["title:string", "body:text"] }
 
   before do
-    prepare_destination
-    stub_const("Rails::Generators", rails_generators)
+    allow(Securial::Engine).to receive(:root).and_return(Rails.root + "tmp/")
+
+    # Clean up any previously generated files
+    FileUtils.rm_rf(Rails.root.join("tmp"))
   end
 
-  after { FileUtils.rm_rf(destination_root) }
+  describe ".file_name" do
+    it "returns the correct manifest filename" do
+      expect(described_class.file_name).to eq("generator_manifest.txt")
+    end
+  end
 
   describe "#run_scaffold" do
-    context "with name and attributes" do
-      let(:generator) { described_class.new(["Post", "title:string", "body:text"]) }
-
-      it "invokes the Rails scaffold generator with correct parameters" do
+    context "when generating scaffold" do
+      before do
+        allow(Rails::Generators).to receive(:invoke)
         generator.run_scaffold
+      end
 
-        expect(rails_generators).to have_received(:invoke).with(
-          "scaffold",
-          ["Post", "title:string", "body:text", "--api=false", "--template-engine=jbuilder"],
+      it "invokes both model and jbuilder generators" do
+        expect(Rails::Generators).to have_received(:invoke).with(
+          "model",
+          [name, *attributes.map(&:to_s)],
+          {
+            behavior: :invoke,
+            destination_root: (Rails.root + "tmp/"),
+          }
+        ).ordered
+
+        expect(Rails::Generators).to have_received(:invoke).with(
+          "securial:jbuilder",
+          [name, *attributes],
           hash_including(
             behavior: :invoke,
-            destination_root: Rails.root,
+            destination_root: Rails.root + "tmp/",
           )
-        )
+        ).ordered
+      end
+
+      it "creates controller file in correct location" do
+        generator.run_scaffold
+        controller_path = Rails.root.join("tmp/app/controllers/securial/posts_controller.rb")
+        expect(File).to exist(controller_path)
+      end
+
+      it "creates request spec file in correct location" do
+        generator.run_scaffold
+        request_spec_path = Rails.root.join("tmp/spec/requests/securial/posts_spec.rb")
+        expect(File).to exist(request_spec_path)
+      end
+
+      it "creates routing spec file in correct location" do
+        generator.run_scaffold
+        routing_spec_path = Rails.root.join("tmp/spec/routing/securial/posts_routing_spec.rb")
+        expect(File).to exist(routing_spec_path)
+      end
+
+      it "adds routes to the routes file" do
+        generator.run_scaffold
+        routes_path = Rails.root.join("tmp/config/routes.rb")
+        expect(File).to exist(routes_path)
+
+        routes_content = File.read(routes_path)
+        expect(routes_content).to include("resources :posts")
       end
     end
 
-    context "with name only" do
-      let(:generator) { described_class.new(["User"]) }
+    context "when removing scaffold" do
+      subject(:generator) do
+        gen = described_class.new(generator_args)
+        gen.behavior = :revoke
+        gen
+      end
 
-      it "invokes the Rails scaffold generator with just the name" do
+      let(:generator_args) { [name, *attributes] }
+
+      before do
+        # First generate the files
+        gen = described_class.new(generator_args)
+        gen.behavior = :invoke
+        gen.run_scaffold
+      end
+
+      it "removes all generated files" do
+        # Remove the debugger line
         generator.run_scaffold
 
-        expect(rails_generators).to have_received(:invoke).with(
-          "scaffold",
-          ["User", "--api=false", "--template-engine=jbuilder"],
-          hash_including(
-            behavior: :invoke,
-            destination_root: Rails.root,
-          )
-        )
+        expect(File).not_to exist(Rails.root.join("tmp/app/controllers/securial/posts_controller.rb"))
+        expect(File).not_to exist(Rails.root.join("tmp/spec/requests/securial/posts_spec.rb"))
+        expect(File).not_to exist(Rails.root.join("tmp/spec/routing/securial/posts_routing_spec.rb"))
+      end
+
+      it "removes routes from the routes file" do
+        # Remove the debugger line
+        generator.run_scaffold
+
+        routes_path = Rails.root.join("tmp/config/routes.rb")
+        expect(File).to exist(routes_path)
+
+        routes_content = File.read(routes_path)
+        expect(routes_content).not_to include("resources :posts")
+      end
+    end
+  end
+
+  describe "#status_behavior" do
+    context "when behavior is :invoke" do
+      subject(:generator) do
+        gen = described_class.new(generator_args)
+        gen.behavior = :invoke
+        gen
+      end
+
+      let(:generator_args) { [name, *attributes] }
+
+      it "returns :create" do
+        expect(generator.send(:status_behavior)).to eq(:create)
+      end
+    end
+
+    context "when behavior is :revoke" do
+      subject(:generator) do
+        gen = described_class.new(generator_args)
+        gen.behavior = :revoke
+        gen
+      end
+
+      let(:generator_args) { [name, *attributes] }
+
+      it "returns :remove" do
+        expect(generator.send(:status_behavior)).to eq(:remove)
+      end
+    end
+  end
+
+  describe "#status_color" do
+    context "when behavior is :invoke" do
+      subject(:generator) do
+        gen = described_class.new(generator_args)
+        gen.behavior = :invoke
+        gen
+      end
+
+      let(:generator_args) { [name, *attributes] }
+
+      it "returns :create" do
+        expect(generator.send(:status_color)).to eq(:green)
+      end
+    end
+
+    context "when behavior is :revoke" do
+      subject(:generator) do
+        gen = described_class.new(generator_args)
+        gen.behavior = :revoke
+        gen
+      end
+
+      let(:generator_args) { [name, *attributes] }
+
+      it "returns :remove" do
+        expect(generator.send(:status_color)).to eq(:red)
       end
     end
   end
