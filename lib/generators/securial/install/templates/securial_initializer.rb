@@ -13,4 +13,10 @@ Securial.configure do |config|
 
   # Set log level for stdout logger
   config.stdout_log_level = :info
+
+  # Set the role for admin users
+  config.admin_role = :admin
+
+  # Set the role for regular users
+  config.user_role = :user
 end

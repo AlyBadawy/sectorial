@@ -19,6 +19,9 @@ module Securial
                        model_specs: true
 
       g.fixture_replacement :factory_bot, dir: "spec/factories"
+
+      # Add JBuilder configuration
+      g.template_engine :jbuilder
     end
 
     initializer "securial.logger" do
