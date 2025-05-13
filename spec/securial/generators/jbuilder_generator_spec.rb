@@ -1,4 +1,3 @@
-# lib/generators/securial/jbuilder/jbuilder_generator_test.rb
 require "spec_helper"
 require "generators/securial/jbuilder/jbuilder_generator"
 
@@ -18,7 +17,6 @@ RSpec.describe Securial::Generators::JbuilderGenerator, type: :generator do
     end
 
     it "has the correct source root" do
-      expected_path = File.expand_path("templates", File.dirname(File.dirname(__FILE__)))
       expect(described_class.source_root.to_s).to end_with("templates")
     end
   end
