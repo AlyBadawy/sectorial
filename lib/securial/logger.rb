@@ -57,7 +57,10 @@ module Securial
       end
 
       def close
-        @targets.each(&:close)
+        @targets.each do |t|
+          next if [STDOUT, STDERR].include?(t)
+          t.close
+        end
       end
 
       def flush
