@@ -24,4 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "rails", "~> 8.0", ">= 8.0.2"
 
   spec.add_dependency "jbuilder", "~> 2.11"
+
+  spec.add_development_dependency "rubocop"
+  spec.add_development_dependency "rubocop-rspec"
 end

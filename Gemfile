@@ -26,6 +26,8 @@ group :development, :test do
   gem "dotenv-rails"
   gem "factory_bot_rails"
   gem "faker"
+  gem "generator_spec"
+  gem "ostruct"
   gem "pry-byebug"
   gem "pry-rails"
   gem "rspec-rails"
