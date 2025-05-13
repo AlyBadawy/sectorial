@@ -1,8 +1,19 @@
 require "securial/version"
 require "securial/engine"
+require "securial/configuration"
 
 require "jbuilder"
 
 module Securial
-  # Your code goes here...
+  class << self
+    attr_writer :configuration
+
+    def configuration
+      @configuration ||= Configuration.new
+    end
+
+    def configure
+      yield(configuration)
+    end
+  end
 end

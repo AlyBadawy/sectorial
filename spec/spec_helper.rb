@@ -2,6 +2,10 @@ require "simplecov"
 
 SimpleCov.start do
   add_filter "/spec/"
+  add_filter "/lib/securial/version.rb"
+  add_filter "/lib/generators/securial/install/templates/"
+
+  track_files "lib/**/*.rb"
   minimum_coverage (ENV.fetch("SIMPLECOV_MINIMUM_COVERAGE") { 95 }).to_i
 end
 

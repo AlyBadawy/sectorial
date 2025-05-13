@@ -1,7 +1,12 @@
+require_relative "../securial/logger"
+require_relative "../securial/middleware/request_logger_tag"
+
 module Securial
   class Engine < ::Rails::Engine
     isolate_namespace Securial
     config.generators.api_only = true
+
+    config.autoload_paths += Dir["#{config.root}/lib/generators"]
 
     config.generators do |g|
       g.test_framework :rspec,
@@ -14,6 +19,14 @@ module Securial
                        model_specs: true
 
       g.fixture_replacement :factory_bot, dir: "spec/factories"
+    end
+
+    initializer "securial.logger" do
+      Securial.const_set(:ENGINE_LOGGER, Securial::Logger.build)
+    end
+
+    initializer "securial.middleware" do |app|
+      app.middleware.use Securial::Middleware::RequestLoggerTag
     end
   end
 end

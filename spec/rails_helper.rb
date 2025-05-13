@@ -30,8 +30,10 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
 
+  config.include GeneratorSpec::TestCase, type: :generator
+
   FactoryBot.definition_file_paths = [
-    File.expand_path("factories", __dir__)
+    File.expand_path("factories", __dir__),
   ]
   FactoryBot.find_definitions
 
