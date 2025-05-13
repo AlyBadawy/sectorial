@@ -131,6 +131,9 @@ GEM
       i18n (>= 1.8.11, < 2)
     fasterer (0.11.0)
       ruby_parser (>= 3.19.1)
+    generator_spec (0.10.0)
+      activesupport (>= 3.0.0)
+      railties (>= 3.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.7)
@@ -175,6 +178,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.8-x86_64-linux-gnu)
       racc (~> 1.4)
+    ostruct (0.6.1)
     overcommit (0.67.1)
       childprocess (>= 0.6.3, < 6)
       iniparse (~> 1.4)
@@ -348,6 +352,8 @@ DEPENDENCIES
   factory_bot_rails
   faker
   fasterer
+  generator_spec
+  ostruct
   overcommit
   propshaft
   pry-byebug
