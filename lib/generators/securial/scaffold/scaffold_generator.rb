@@ -53,6 +53,8 @@ module Securial
           destination_root: Securial::Engine.root,
         )
 
+        add_routes
+
         say_status(:scaffold, "controller specs: #{@routing_spec_path}", :cyan) unless Rails.env.test?
 
         # Generate request specs
@@ -117,6 +119,26 @@ module Securial
 
       def root_path
         Rails.env.test? ? Rails.root.join("tmp/") : Engine.root
+      end
+
+      def add_routes
+        say_status(:routes, "routes", :cyan) unless Rails.env.test?
+
+        routes_path = Rails.env.test? ?
+          Rails.root.join("tmp/config/routes.rb") :
+          Engine.root.join("config/routes.rb")
+
+        route_config = "resources :#{plain_plural_name}"
+        template("request_spec.rb", routes_path, verbose: false) unless File.exist?(routes_path)
+
+        if behavior == :invoke
+          inject_into_file routes_path,
+                           "    #{route_config}\n",
+                           after: "defaults format: :json do\n",
+                           verbose: !Rails.env.test?
+        else
+          gsub_file routes_path, /^\s*#{route_config}\n/, ""
+        end
       end
     end
   end
