@@ -7,6 +7,8 @@ module Securial
     class ScaffoldGenerator < Rails::Generators::NamedBase
       include Rails::Generators::ResourceHelpers
 
+      Thor::Base.shell = Thor::Shell::Color
+
       source_root File.expand_path("templates", __dir__)
 
       # Add ORM class option
@@ -18,8 +20,8 @@ module Securial
         "generator_manifest.txt"
       end
 
-      def run_scaffold
-        say_status("info", "Running built-in scaffold generator with custom options", :blue) unless Rails.env.test?
+      def run_scaffold # rubocop:disable Metrics/MethodLength
+        say_status(:scaffold, "Running built-in scaffold generator with custom options", :cyan) unless Rails.env.test?
 
         # Generate model and migration
         Rails::Generators.invoke(
@@ -29,11 +31,16 @@ module Securial
           destination_root: Securial::Engine.root,
         )
 
+        indent = "  " # two-space indent
+
         # Generate controller from template
         @controller_path = File.join("app/controllers/securial", "#{controller_file_name}_controller.rb")
-        template("controller.rb", @controller_path)
+        say_status(:scaffold, "controller", :cyan) unless Rails.env.test?
+        say_status(status_behavior, "#{indent}#{@controller_path}", status_color) unless Rails.env.test?
+        template("controller.rb", @controller_path, verbose: false)
 
         # Generate views
+        say_status(:scaffold, "JBuilder views", :cyan) unless Rails.env.test?
         Rails::Generators.invoke(
           "securial:jbuilder",
           [name, *attributes.map(&:to_s)],
@@ -41,13 +48,19 @@ module Securial
           destination_root: Securial::Engine.root,
         )
 
+        say_status(:scaffold, "controller specs: #{@routing_spec_path}", :cyan) unless Rails.env.test?
+
         # Generate request specs
         @request_spec_path = File.join("spec/requests/securial", "#{resource_path_name}_spec.rb")
-        template("request_spec.rb", @request_spec_path)
+        say_status(status_behavior, "#{indent}#{@request_spec_path}", status_color) unless Rails.env.test?
+        template("request_spec.rb", @request_spec_path, verbose: false)
 
         # Generate routing specs
         @routing_spec_path = File.join("spec/routing/securial", "#{resource_path_name}_routing_spec.rb")
-        template("routing_spec.rb", @routing_spec_path)
+        say_status(status_behavior, "#{indent}#{@routing_spec_path}", status_color) unless Rails.env.test?
+        template("routing_spec.rb", @routing_spec_path, verbose: false)
+
+        say_status(:success, "Scaffold complete ✨✨", :green) unless Rails.env.test?
       end
 
       private
@@ -78,6 +91,14 @@ module Securial
 
       def controller_file_name
         plain_plural_name
+      end
+
+      def status_behavior
+        behavior == :invoke ? :create : :remove
+      end
+
+      def status_color
+        behavior == :invoke ? :green : :red
       end
     end
   end
