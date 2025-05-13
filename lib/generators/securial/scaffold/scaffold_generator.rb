@@ -10,7 +10,7 @@ module Securial
       argument :attributes, type: :array, default: [], banner: "field:type field:type"
 
       def run_scaffold
-        say_status("info", "Running built-in scaffold generator with custom options", :blue)
+        say_status("info", "Running built-in scaffold generator with custom options", :blue) unless Rails.env.test?
 
         Rails::Generators.invoke(
           "scaffold",
