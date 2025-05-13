@@ -50,35 +50,6 @@ module Securial
         template("routing_spec.rb", @routing_spec_path)
       end
 
-      def add_to_manifest
-        # Register files for removal during destroy
-        in_root do
-          if behavior == :invoke
-            paths = [@controller_path, @request_spec_path, @routing_spec_path]
-            paths.each do |path|
-              if File.exist?(path)
-                append_to_file "tmp/generator_manifest.txt", "#{path}\n"
-              end
-            end
-          end
-        end
-      end
-
-      def cleanup_manifest
-        # Clean up manifest entries during destroy
-        if behavior == :revoke
-          in_root do
-            manifest_file = "tmp/#{self.class.file_name}"
-            if File.exist?(manifest_file)
-              files = File.readlines(manifest_file).map(&:chomp)
-              files.each do |file|
-                remove_file(file) if file.include?(resource_path_name)
-              end
-            end
-          end
-        end
-      end
-
       private
 
       def namespaced_name
