@@ -14,9 +14,16 @@ module Securial
 
         Rails::Generators.invoke(
           "scaffold",
-          [name, *attributes.map(&:to_s), "--api=false", "--template-engine=jbuilder"],
+          [name, *attributes.map(&:to_s), "--api=true"],
           behavior: behavior,
-          destination_root: Rails.root,
+          destination_root: Securial::Engine.root,
+        )
+
+        Rails::Generators.invoke(
+          "securial:jbuilder",
+          [name, *attributes.map(&:to_s)],
+          behavior: behavior,
+          destination_root: Securial::Engine.root,
         )
       end
     end
