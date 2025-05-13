@@ -3,6 +3,8 @@ require "rails/generators"
 module Securial
   module Generators
     class ScaffoldGenerator < Rails::Generators::Base
+      include Rails::Generators::ResourceHelpers
+
       source_root File.expand_path("templates", __dir__)
 
       argument :name, type: :string
@@ -50,6 +52,10 @@ module Securial
 
       def orm_class
         Rails::Generators::ActiveModel
+      end
+
+      def class_name
+        name.classify
       end
     end
   end
