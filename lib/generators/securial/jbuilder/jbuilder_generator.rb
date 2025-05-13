@@ -18,21 +18,26 @@ module Securial
       end
 
       def create_resource_file
-        @resource_path_name = File.join("app/views/securial", plural_table_name, "_#{singular_table_name}.json.jbuilder")
-        say_status(status_behavior, "    #{@resource_path_name}", status_color) unless Rails.env.test?
+        @resource_path_name = File.join(view_path, "_#{singular_table_name}.json.jbuilder")
+        say_status(status_behavior, "  #{@resource_path_name}", status_color) unless Rails.env.test?
         template "_resource.json.jbuilder", @resource_path_name, verbose: false
       end
 
       def create_index_file
-        @index_path_name = File.join("app/views/securial", plural_table_name, "index.json.jbuilder")
-        say_status(status_behavior, "    #{@index_path_name}", status_color) unless Rails.env.test?
+        @index_path_name = File.join(view_path, "index.json.jbuilder")
+        say_status(status_behavior, "  #{@index_path_name}", status_color) unless Rails.env.test?
         template "index.json.jbuilder", @index_path_name, verbose: false
       end
 
       def create_show_file
-        @show_path_name = File.join("app/views/securial", plural_table_name, "show.json.jbuilder")
-        say_status(status_behavior, "    #{@show_path_name}", status_color) unless Rails.env.test?
+        @show_path_name = File.join(view_path, "show.json.jbuilder")
+        say_status(status_behavior, "  #{@show_path_name}", status_color) unless Rails.env.test?
         template "show.json.jbuilder", @show_path_name, verbose: false
+      end
+
+      def view_path
+        base_path = Rails.env.test? ? Rails.root.join("tmp/app/views/securial").to_s : "app/views/securial"
+        @view_path ||= File.join(base_path, plural_table_name)
       end
 
       def status_behavior
