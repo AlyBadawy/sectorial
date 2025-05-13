@@ -1,6 +1,5 @@
 Securial::Engine.routes.draw do
   defaults format: :json do
-    resources :posts
     get "/status", to: "status#show", as: :status
 
     namespace Securial.admin_namespace do
