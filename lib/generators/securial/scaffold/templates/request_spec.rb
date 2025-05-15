@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "/<%= plural_table_name %>", type: :request do
-  let(:<%= singular_table_name %>) { create(:"securial_<%= singular_table_name %>") }
+  let(:<%= singular_table_name %>) { create(:<%= singular_table_name %>) }
 
   describe "GET /index" do
     it "returns http success" do
