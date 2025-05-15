@@ -1,4 +1,5 @@
 require "rails/generators"
+require "rake"
 
 module Securial
   module Generators
@@ -23,7 +24,14 @@ module Securial
 
       def install_migrations
         say_status("copying", "Securial migrations", :green)
-        rake("securial:install:migrations")
+        load_tasks
+        Rake::Task["securial:install:migrations"].invoke
+      end
+
+      private
+
+      def load_tasks
+        Rails.application.load_tasks unless Rake::Task.task_defined?("securial:install:migrations")
       end
     end
   end
