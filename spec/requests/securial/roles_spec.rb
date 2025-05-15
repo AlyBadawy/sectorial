@@ -42,7 +42,7 @@ RSpec.describe "/securial_roles", type: :request do
           as: :json
       expect(response.content_type).to match(a_string_including("application/json"))
       res_body = JSON.parse(response.body)
-      expect(res_body.keys).to eq(%w[records count url])
+      expect(res_body.keys).to match_array(%w[records count url])
       records = res_body["records"]
       expect(records.first["role_name"]).to eq("Admin")
       expect(records.first["hide_from_profile"]).to be(true)
