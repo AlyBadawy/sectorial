@@ -22,6 +22,19 @@ RSpec.describe "/securial_roles", type: :request do
       expect(response).to have_http_status(:success)
     end
 
+    it "renders a JSON response with the correct keys" do
+      Securial::Role.create! valid_attributes
+      get securial.roles_path,
+          headers: @valid_headers,
+          as: :json
+      expect(response.content_type).to match(a_string_including("application/json"))
+      res_body = JSON.parse(response.body)
+      expect(res_body.keys).to match_array(%w[records count url])
+      records = res_body["records"]
+      expect(records).to be_an(Array)
+      expect(records.first.keys).to match_array(%w[id role_name hide_from_profile created_at updated_at url])
+    end
+
     it "renders a JSON response with all roles as an array" do
       Securial::Role.create! valid_attributes
       get securial.roles_path,
@@ -29,10 +42,22 @@ RSpec.describe "/securial_roles", type: :request do
           as: :json
       expect(response.content_type).to match(a_string_including("application/json"))
       res_body = JSON.parse(response.body)
-      expect(res_body).to be_an(Array)
-      expect(res_body.length).to eq(1)
-      expect(res_body[0]["role_name"]).to eq("Admin")
-      expect(res_body[0]["hide_from_profile"]).to be(true)
+      expect(res_body.keys).to match_array(%w[records count url])
+      records = res_body["records"]
+      expect(records.first["role_name"]).to eq("Admin")
+      expect(records.first["hide_from_profile"]).to be(true)
+    end
+
+    it "renders a JSON response with the correct count" do
+      Securial::Role.create! valid_attributes
+      get securial.roles_path,
+          headers: @valid_headers,
+          as: :json
+      expect(response.content_type).to match(a_string_including("application/json"))
+      res_body = JSON.parse(response.body)
+      records = res_body["records"]
+      expect(res_body["count"]).to eq(1)
+      expect(records.length).to eq(1)
     end
 
     it "renders an empty array when no roles to display" do
@@ -41,7 +66,10 @@ RSpec.describe "/securial_roles", type: :request do
           as: :json
       expect(response.content_type).to match(a_string_including("application/json"))
       res_body = JSON.parse(response.body)
-      expect(res_body.length).to eq(0)
+      expect(res_body.keys).to eq(%w[records count url])
+      records = res_body["records"]
+      expect(records.length).to eq(0)
+      expect(res_body["count"]).to eq(0)
     end
   end
 
