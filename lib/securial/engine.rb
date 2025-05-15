@@ -1,9 +1,16 @@
-require_relative "../securial/logger"
-require_relative "../securial/middleware/request_logger_tag"
+require_relative "./logger"
+require_relative "./middleware/request_logger_tag"
 
 module Securial
   class Engine < ::Rails::Engine
     isolate_namespace Securial
+
+    initializer "securial.factories", after: "factory_bot.set_factory_paths" do
+      if defined?(FactoryBot)
+        FactoryBot.definition_file_paths << Engine.root.join("lib", "securial", "factories")
+      end
+    end
+
     config.generators.api_only = true
 
     config.autoload_paths += Dir["#{config.root}/lib/generators"]
@@ -18,7 +25,7 @@ module Securial
                        request_specs: true,
                        model_specs: true
 
-      g.fixture_replacement :factory_bot, dir: "spec/factories"
+      g.fixture_replacement :factory_bot, dir: "lib/securial/factories"
 
       # Add JBuilder configuration
       g.template_engine :jbuilder
