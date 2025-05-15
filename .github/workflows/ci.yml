@@ -57,6 +57,6 @@ jobs:
           bundle exec rails db:create
           bundle exec rails db:schema:load
       - name: Run SimpleCov to check test coverage
-        run: bundle exec rspec
+        run: COVERALLS_REPO_TOKEN=${{ secrets.COVERALLS_REPO_TOKEN }} bundle exec rspec
         env:
           SIMPLECOV_MINIMUM_COVERAGE: 95
