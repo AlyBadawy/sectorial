@@ -12,7 +12,7 @@ RSpec.describe "/<%= plural_table_name %>", type: :request do
 
   describe "GET /show" do
     it "returns http success" do
-      get securial.<%= class_name.pluralize.downcase %>_path
+      get securial.<%= class_name.downcase %>_path(<%= singular_table_name %>)
       expect(response).to have_http_status(:success)
     end
   end
