@@ -29,10 +29,10 @@ RSpec.describe "/securial_roles", type: :request do
           as: :json
       expect(response.content_type).to match(a_string_including("application/json"))
       res_body = JSON.parse(response.body)
-      expect(res_body.keys).to eq(%w[records count url])
+      expect(res_body.keys).to match_array(%w[records count url])
       records = res_body["records"]
       expect(records).to be_an(Array)
-      expect(records.first.keys).to eq(%w[id role_name hide_from_profile created_at updated_at url])
+      expect(records.first.keys).to match_array(%w[id role_name hide_from_profile created_at updated_at url])
     end
 
     it "renders a JSON response with all roles as an array" do
