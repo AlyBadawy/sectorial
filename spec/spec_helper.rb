@@ -5,6 +5,7 @@ SimpleCov.start do
   add_filter "/lib/securial/version.rb"
   add_filter "/lib/generators/securial/install/templates/"
   add_filter "/lib/generators/securial/scaffold/templates/"
+  add_filter "/lib/generators/factory_bot/"
 
   track_files "lib/**/*.rb"
   minimum_coverage (ENV.fetch("SIMPLECOV_MINIMUM_COVERAGE") { 95 }).to_i

@@ -18,7 +18,8 @@ AllCops:
     - public/**/*
     - bin/**/*
     - data/**/*
-    - lib/generators/securial/*/templates/**/*
+    - lib/generators/securial/**/templates/**/*
+    - lib/generators/factory_bot/**/templates/**/*
 
 Bundler/DuplicatedGem:
   Enabled: true

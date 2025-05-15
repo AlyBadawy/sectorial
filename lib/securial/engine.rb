@@ -11,6 +11,10 @@ module Securial
       end
     end
 
+    initializer "securial.load_factory_bot_generator" do
+      require_relative "../generators/factory_bot/model/model_generator"
+    end
+
     config.generators.api_only = true
 
     config.autoload_paths += Dir["#{config.root}/lib/generators"]
