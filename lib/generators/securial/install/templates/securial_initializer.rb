@@ -2,11 +2,15 @@
 # You can customize logging behavior here.
 
 Securial.configure do |config|
-  # Enable or disable logging to file
+
+  ##### Logging Configuration
+  ## Enable or disable logging to file
+  # Set to true to log to a file, false to disable file logging
   config.log_to_file = false
 
-  # Enable or disable logging to STDOUT
-  config.log_to_stdout = false
+  ## Enable or disable logging to STDOUT
+  # Set to true to log to STDOUT, false to disable STDOUT logging
+  config.log_to_stdout = false # Enable or disable logging to STDOUT
 
   # Set log level for file logger: :debug, :info, :warn, :error, :fatal, or :unknown
   config.file_log_level = :info
@@ -14,9 +18,13 @@ Securial.configure do |config|
   # Set log level for stdout logger
   config.stdout_log_level = :info
 
-  # Set the role for admin users
+  ##### User Roles
+  ## Set the role for admin users
+  # This role is used to determine access levels and permissions
+  # for different user types in the application. including access
+  # to specific features and actions.
+  # e.g. if the admin role is set to :superuser, then users with this role
+  # will have access to the admin dashboard and other admin features.
+  # in the `/securial/superusers` namespace.
   config.admin_role = :admin
-
-  # Set the role for regular users
-  config.user_role = :user
 end
