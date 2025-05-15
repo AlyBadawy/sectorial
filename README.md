@@ -67,6 +67,26 @@ Securial.configure do |config|
 end
 ```
 
+### 2. Database IDs
+
+Securial uses UUIDv7 for all model primary keys. These IDs are stored as strings to ensure compatibility across all database adapters. The migrations automatically set up the correct column types:
+
+```ruby
+# Example of how IDs are defined in migrations
+create_table :securial_roles, id: :string do |t|
+  # ...other columns
+end
+```
+
+Benefits of this approach:
+
+- Globally unique identifiers across all instances
+- Time-ordered UUIDs for better database performance
+- Compatible with all major database adapters (PostgreSQL, MySQL, SQLite)
+- No need for database-specific UUID extensions
+
+> Note: The IDs are automatically generated when creating new records - you don't need to handle UUID generation manually.
+
 ## Usage
 
 Once installed and mounted, you can access endpoints like:
