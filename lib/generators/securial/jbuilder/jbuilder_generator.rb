@@ -37,7 +37,7 @@ module Securial
 
       def view_path
         base_path = Rails.env.test? ? Rails.root.join("tmp/app/views/securial").to_s : "app/views/securial"
-        @view_path ||= File.join(base_path, plural_table_name)
+        @view_path ||= File.join(base_path, name.pluralize.downcase)
       end
 
       def status_behavior
