@@ -20,6 +20,8 @@ module Securial
     config.autoload_paths += Dir["#{config.root}/lib/generators"]
 
     config.generators do |g|
+      g.orm :active_record, primary_key_type: :string
+
       g.test_framework :rspec,
                        fixtures: false,
                        view_specs: false,
