@@ -1,6 +1,6 @@
 # Securial
 
-![Tests](https://github.com/alybadawy/securial/actions/workflows/ci.yml/badge.svg)
+[![Tests](https://github.com/alybadawy/securial/actions/workflows/ci.yml/badge.svg)](https://github.com/alybadawy/securial/actions)
 [![Coverage Status](https://coveralls.io/repos/github/AlyBadawy/Securial/badge.svg?branch=main)](https://coveralls.io/github/AlyBadawy/Securial?branch=main)
 
 ![License](https://img.shields.io/badge/license-MIT-blue)
