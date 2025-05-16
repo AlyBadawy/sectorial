@@ -1,7 +1,7 @@
 # Securial
 
-![Test Status](https://img.shields.io/badge/tests-passing-brightgreen)
-![Coverage](https://img.shields.io/badge/coverage-100%25-success)
+[![Tests](https://github.com/alybadawy/securial/actions/workflows/ci.yml/badge.svg)](https://github.com/alybadawy/securial/actions)
+[![Coverage Status](https://coveralls.io/repos/github/AlyBadawy/Securial/badge.svg?branch=main)](https://coveralls.io/github/AlyBadawy/Securial?branch=main)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 **Securial** is a mountable Rails engine that provides robust, extensible authentication and access control for Rails applications. It supports:
