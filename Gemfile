@@ -21,7 +21,7 @@ end
 group :development, :test do
   gem "brakeman", require: false
   gem "capybara"
-  gem "coveralls", require: false
+  gem "coveralls-lcov", require: false
   gem "database_cleaner"
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "dotenv-rails"
@@ -34,4 +34,5 @@ group :development, :test do
   gem "rspec-rails"
   gem "shoulda-matchers"
   gem "simplecov"
+  gem "simplecov-lcov", "~> 0.8.0"
 end

@@ -1,12 +1,14 @@
 require "simplecov"
-require "coveralls"
+require "simplecov-lcov"
 
+SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
   SimpleCov::Formatter::HTMLFormatter,
-  Coveralls::SimpleCov::Formatter
+  SimpleCov::Formatter::LcovFormatter
 ])
 
 SimpleCov.start do
+  enable_coverage :branch
   add_filter "/spec/"
   add_filter "/lib/securial/version.rb"
   add_filter "/lib/generators/securial/install/templates/"
