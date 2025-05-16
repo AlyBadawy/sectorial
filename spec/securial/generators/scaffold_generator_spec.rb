@@ -111,6 +111,32 @@ RSpec.describe Securial::Generators::ScaffoldGenerator do
         expect(routes_content).not_to include("resources :posts")
       end
     end
+
+    context "when not in test environment" do
+      before do
+        allow(Rails.env).to receive(:test?).and_return(false)
+        allow(Rails::Generators).to receive(:invoke)
+      end
+
+      it "outputs all expected status messages" do
+        expected_messages = [
+          "Running built-in scaffold generator with custom options",
+          "controller",
+          generator.send(:controller_path).to_s,
+          "JBuilder views",
+          "controller specs:",
+          generator.send(:request_spec_path).to_s,
+          generator.send(:routing_spec_path).to_s,
+          "Scaffold complete ✨✨"
+        ]
+
+        # Use the output matcher
+        output = expected_messages.map { |msg| /#{Regexp.escape(msg)}/ }
+
+        expect { generator.run_scaffold }.to output(a_string_matching(Regexp.union(*output)))
+          .to_stdout
+      end
+    end
   end
 
   describe "#status_behavior" do
