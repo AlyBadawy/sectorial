@@ -71,4 +71,47 @@ RSpec.describe Securial::Generators::JbuilderGenerator, type: :generator do
       expect(generator.send(:status_color)).to eq(:red)
     end
   end
+
+  describe "status messages" do
+    before do
+      allow(generator).to receive(:say_status)
+      allow(Rails.env).to receive(:test?).and_return(true)
+    end
+
+    it "does not call say_status for resource file in test environment" do
+      generator.send(:create_resource_file)
+      expect(generator).not_to have_received(:say_status)
+    end
+
+    it "does not call say_status for index file in test environment" do
+      generator.send(:create_index_file)
+      expect(generator).not_to have_received(:say_status)
+    end
+
+    it "does not call say_status for show file in test environment" do
+      generator.send(:create_show_file)
+      expect(generator).not_to have_received(:say_status)
+    end
+
+    context "when not in test environment" do
+      before do
+        allow(Rails.env).to receive(:test?).and_return(false)
+      end
+
+      it "calls say_status for resource file" do
+        generator.send(:create_resource_file)
+        expect(generator).to have_received(:say_status).with(:create, /.*_user\.json\.jbuilder/, :green)
+      end
+
+      it "calls say_status for index file" do
+        generator.send(:create_index_file)
+        expect(generator).to have_received(:say_status).with(:create, /.*index\.json\.jbuilder/, :green)
+      end
+
+      it "calls say_status for show file" do
+        generator.send(:create_show_file)
+        expect(generator).to have_received(:say_status).with(:create, /.*show\.json\.jbuilder/, :green)
+      end
+    end
+  end
 end

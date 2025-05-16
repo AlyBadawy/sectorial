@@ -7,8 +7,7 @@ module Securial
     class ScaffoldGenerator < Rails::Generators::NamedBase
       include Rails::Generators::ResourceHelpers
 
-      # Enable incompatible default types for Thor options
-      self.allow_incompatible_default_type! if Rails.env.test?
+      allow_incompatible_default_type!
 
       Thor::Base.shell = Thor::Shell::Color
 
@@ -103,17 +102,17 @@ module Securial
       end
 
       def controller_path
-        base_path = Rails.env.test? ? Rails.root.join("tmp/app/controllers/securial").to_s : "app/controllers/securial"
+        base_path = root_path.join("app/controllers/securial")
         @controller_path ||= File.join(base_path, "#{controller_file_name}_controller.rb")
       end
 
       def request_spec_path
-        base_path = Rails.env.test? ? Rails.root.join("tmp/spec/requests/securial").to_s : "spec/requests/securial"
+        base_path = root_path.join("spec/requests/securial")
         @request_spec_path ||= File.join(base_path, "#{resource_path_name}_spec.rb")
       end
 
       def routing_spec_path
-        base_path = Rails.env.test? ? Rails.root.join("tmp/spec/routing/securial").to_s : "spec/routing/securial"
+        base_path = root_path.join("spec/routing/securial")
         @routing_spec_path ||= File.join(base_path, "#{resource_path_name}_routing_spec.rb")
       end
 
