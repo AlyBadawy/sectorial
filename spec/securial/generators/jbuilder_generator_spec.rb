@@ -95,6 +95,7 @@ RSpec.describe Securial::Generators::JbuilderGenerator, type: :generator do
 
     context "when not in test environment" do
       before do
+        FileUtils.rm_rf(File.join(generator.destination_root, "app", "views", "securial", "tests"))
         allow(Rails.env).to receive(:test?).and_return(false)
       end
 
