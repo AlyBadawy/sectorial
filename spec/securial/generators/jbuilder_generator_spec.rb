@@ -99,7 +99,7 @@ RSpec.describe Securial::Generators::JbuilderGenerator, type: :generator do
       end
 
       after do
-        FileUtils.rm_rf(Rails.root.join("..", "..", "app", "views", "securial", "tests"))
+        FileUtils.rm_rf(File.join(generator.destination_root, "app", "views", "securial", "tests"))
       end
 
       it "calls say_status for resource file" do
