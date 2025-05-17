@@ -9,4 +9,4 @@ json.bio securial_user.bio
 json.created_at securial_user.created_at
 json.updated_at securial_user.updated_at
 
-json.url securial.users_url(securial_user, format: :json)
+json.url securial.user_url(securial_user, format: :json)
