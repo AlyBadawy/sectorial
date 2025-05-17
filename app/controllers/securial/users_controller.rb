@@ -21,7 +21,7 @@ module Securial
 
     def update
       if @securial_user.update(securial_user_params)
-        render :show, status: :ok, location: @user
+        render :show, status: :ok, location: @securial_user
       else
         render json: @securial_user.errors, status: :unprocessable_entity
       end
