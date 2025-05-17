@@ -7,6 +7,7 @@ Securial::Engine.routes.draw do
       # For example:
       # resources :users, only: [:index, :show]
       resources :roles
+      resources :users
     end
   end
 end
