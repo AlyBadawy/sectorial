@@ -23,6 +23,10 @@ module Securial
       end
 
       def install_migrations
+        return if Rails.root.to_s.include?("spec/dummy") ||
+                  Rails.root.to_s.include?("tmp") ||
+                  Rails.env.test?
+
         say_status("copying", "Securial migrations", :green)
         load_tasks
         Rake::Task["securial:install:migrations"].invoke
