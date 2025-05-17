@@ -9,7 +9,7 @@ RSpec.describe Securial::Generators::JbuilderGenerator, type: :generator do
     allow(Rails.env).to receive(:test?).and_return(true)
   end
 
-  let(:generator) { described_class.new(["user", "name:string", "email:string"]) }
+  let(:generator) { described_class.new(["test", "name:string", "email:string"]) }
 
   describe "generator configuration" do
     it "inherits from NamedBase" do
@@ -30,8 +30,8 @@ RSpec.describe Securial::Generators::JbuilderGenerator, type: :generator do
         directory "app" do
           directory "views" do
             directory "securial" do
-              directory "users" do
-                file "_user.json.jbuilder"
+              directory "tests" do
+                file "_test.json.jbuilder"
                 file "index.json.jbuilder"
                 file "show.json.jbuilder"
               end
@@ -95,12 +95,17 @@ RSpec.describe Securial::Generators::JbuilderGenerator, type: :generator do
 
     context "when not in test environment" do
       before do
+        FileUtils.rm_rf(File.join(generator.destination_root, "app", "views", "securial", "tests"))
         allow(Rails.env).to receive(:test?).and_return(false)
+      end
+
+      after do
+        FileUtils.rm_rf(File.join(generator.destination_root, "app", "views", "securial", "tests"))
       end
 
       it "calls say_status for resource file" do
         generator.send(:create_resource_file)
-        expect(generator).to have_received(:say_status).with(:create, /.*_user\.json\.jbuilder/, :green)
+        expect(generator).to have_received(:say_status).with(:create, /.*_test\.json\.jbuilder/, :green)
       end
 
       it "calls say_status for index file" do
