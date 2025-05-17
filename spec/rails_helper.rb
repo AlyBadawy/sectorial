@@ -9,6 +9,8 @@ require "rspec/rails"
 
 require "database_cleaner"
 
+Rails.root.glob("spec/support/**/*.rb").each { |f| require f }
+
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e

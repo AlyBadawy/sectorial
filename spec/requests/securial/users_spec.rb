@@ -102,18 +102,56 @@ RSpec.describe "/securial_users", type: :request do
         expect(res_body["bio"]).to eq(valid_attributes[:bio])
       end
     end
+
+    context "with invalid parameters" do
+      it "does not create a new User" do
+        expect {
+          post securial.users_path, params: { securial_user: invalid_attributes }, headers: @valid_headers, as: :json
+        }.not_to change(Securial::User, :count)
+      end
+
+      it "renders a JSON response with errors for the new user" do
+        post securial.users_path,
+             params: { securial_user: invalid_attributes }, headers: @valid_headers, as: :json
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.content_type).to match(a_string_including("application/json"))
+      end
+    end
   end
 
   describe "PUT /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        attributes_for(:securial_user)
+        {
+          username: "John.doe",
+          first_name: "John",
+          last_name: "Doe",
+          phone: "1234567891",
+          bio: "John Doe is the best!",
+        }
       }
 
       it "updates the requested securial_user" do
-        put securial.user_path(securial_user), params: { securial_user: new_attributes }
+        put securial.user_path(securial_user), params: { securial_user: new_attributes }, headers: @valid_headers, as: :json
         securial_user.reload
         expect(response).to have_http_status(:ok)
+        expect(securial_user).to have_attributes(new_attributes)
+      end
+
+      it "renders a JSON response with the user" do
+        put securial.user_path(securial_user), params: { securial_user: new_attributes }, headers: @valid_headers, as: :json
+        expect(response).to have_http_status(:ok)
+        expect(response.content_type).to match(a_string_including("application/json"))
+        res_body = JSON.parse(response.body)
+        expect(res_body.keys).to include(*expected_keys)
+      end
+    end
+
+    context "with invalid parameters" do
+      it "renders a JSON response with errors for the user" do
+        put securial.user_path(securial_user), params: { securial_user: invalid_attributes }, headers: @valid_headers, as: :json
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.content_type).to match(a_string_including("application/json"))
       end
     end
   end
@@ -122,8 +160,14 @@ RSpec.describe "/securial_users", type: :request do
     it "destroys the requested securial_user" do
       securial_user # Create the record
       expect {
-        delete securial.user_path(securial_user)
+        delete securial.user_path(securial_user), headers: @valid_headers, as: :json
       }.to change(Securial::User, :count).by(-1)
+    end
+
+    it "returns a 204 no content response" do
+      securial_user # Create the record
+      delete securial.user_path(securial_user), headers: @valid_headers, as: :json
+      expect(response).to have_http_status(:no_content)
     end
   end
 end
