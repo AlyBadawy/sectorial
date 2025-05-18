@@ -19,7 +19,7 @@ RSpec.describe Securial::Generators::InstallGenerator, type: :generator do
   describe "generator" do
     describe "securial.factories" do
       let(:app) { Rails.application }
-      let(:engine) { described_class.instance }
+      let(:engine) { Securial::Engine.instance }
 
       context "when FactoryBot is defined" do
         before do
