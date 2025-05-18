@@ -10,12 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_15_104930) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_17_155521) do
   create_table "securial_roles", id: :string, force: :cascade do |t|
     t.string "role_name"
     t.boolean "hide_from_profile", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["role_name"], name: "index_securial_roles_on_role_name", unique: true
+  end
+
+  create_table "securial_users", id: :string, force: :cascade do |t|
+    t.string "email_address"
+    t.string "password_digest"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "phone"
+    t.string "username"
+    t.string "bio"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email_address"], name: "index_securial_users_on_email_address", unique: true
+    t.index ["username"], name: "index_securial_users_on_username", unique: true
   end
 end
