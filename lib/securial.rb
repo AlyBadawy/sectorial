@@ -26,7 +26,7 @@ module Securial
     private
 
     def validate_admin_role!
-      error_message = "The admin role cannot be 'admin' or 'admins' as it conflicts with the default routes."
+      error_message = "The admin role cannot be 'account' or 'accounts' as it conflicts with the default routes."
 
       if configuration.admin_role.to_s.pluralize.downcase == "accounts"
         Securial::ENGINE_LOGGER.error(error_message)
