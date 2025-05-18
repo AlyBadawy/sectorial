@@ -58,7 +58,7 @@ RSpec.describe Securial do
   end
 
   describe ".validate_admin_role!" do
-    let(:error_message) { "The admin role cannot be 'admin' or 'admins' as it conflicts with the default routes." }
+    let(:error_message) { "The admin role cannot be 'account' or 'accounts' as it conflicts with the default routes." }
 
     before do
       # Reset configuration before each test
