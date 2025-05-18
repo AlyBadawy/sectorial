@@ -134,11 +134,20 @@ RSpec.describe Securial::Logger do
     let(:multi_io) { described_class::MultiIO.new(target_one, target_two) }
 
     describe "#close" do
-      it "closes all targets" do
-        multi_io.close
+      it "does not close STDOUT or STDERR but closes other targets" do
+        stdout = instance_spy(IO, write: nil, tty?: true)
+        stderr = instance_spy(IO, write: nil, tty?: true)
+        targets = [target_one, target_two, stdout, stderr]
+        target_io = described_class::MultiIO.new(*targets)
+
+        stub_const("STDOUT", stdout)
+        stub_const("STDERR", stderr)
+        target_io.close
 
         expect(target_one).to have_received(:close)
         expect(target_two).to have_received(:close)
+        expect(stdout).not_to have_received(:close)
+        expect(stderr).not_to have_received(:close)
       end
     end
 

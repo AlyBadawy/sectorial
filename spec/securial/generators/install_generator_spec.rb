@@ -17,6 +17,48 @@ RSpec.describe Securial::Generators::InstallGenerator, type: :generator do
   end
 
   describe "generator" do
+    describe "securial.factories" do
+      let(:app) { Rails.application }
+      let(:engine) { Securial::Engine.instance }
+
+      context "when FactoryBot is defined" do
+        before do
+          stub_const("FactoryBot", Module.new do
+            def self.definition_file_paths
+              @paths ||= []
+            end
+
+            def self.definition_file_paths=(paths)
+              @paths = paths
+            end
+          end)
+          allow(engine).to receive(:root).and_return(Pathname.new("/dummy/path"))
+        end
+
+        it "adds engine factories path to FactoryBot definition paths" do
+          FactoryBot.definition_file_paths = []
+
+          # Trigger the initializer
+          engine.initializers.find { |i| i.name == "securial.factories" }.run(app)
+
+          expected_path = engine.root.join("lib", "securial", "factories")
+          expect(FactoryBot.definition_file_paths).to include(expected_path)
+        end
+      end
+
+      context "when FactoryBot is not defined" do
+        before do
+          hide_const("FactoryBot") if defined?(FactoryBot)
+        end
+
+        it "does not raise error" do
+          expect {
+            engine.initializers.find { |i| i.name == "securial.factories" }.run(app)
+          }.not_to raise_error
+        end
+      end
+    end
+
     it "creates the initializer file" do
       run_generator
 
