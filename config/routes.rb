@@ -3,11 +3,12 @@ Securial::Engine.routes.draw do
     get "/status", to: "status#show", as: :status
 
     scope Securial.admin_namespace do
-      # Placeholder for admin-specific routes. Add routes here as needed.
-      # For example:
-      # resources :users, only: [:index, :show]
       resources :roles
       resources :users
+      namespace :role_assignments, as: "role_assignments" do
+        post "assign", action: :create, as: "assign"
+        delete "revoke", action: :destroy, as: "revoke"
+      end
     end
   end
 end

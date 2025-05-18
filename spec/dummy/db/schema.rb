@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_17_155521) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_18_122749) do
+  create_table "securial_role_assignments", id: :string, force: :cascade do |t|
+    t.string "user_id", null: false
+    t.string "role_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_securial_role_assignments_on_role_id"
+    t.index ["user_id"], name: "index_securial_role_assignments_on_user_id"
+  end
+
   create_table "securial_roles", id: :string, force: :cascade do |t|
     t.string "role_name"
     t.boolean "hide_from_profile", default: false, null: false
@@ -32,4 +41,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_17_155521) do
     t.index ["email_address"], name: "index_securial_users_on_email_address", unique: true
     t.index ["username"], name: "index_securial_users_on_username", unique: true
   end
+
+  add_foreign_key "securial_role_assignments", "securial_roles", column: "role_id"
+  add_foreign_key "securial_role_assignments", "securial_users", column: "user_id"
 end
