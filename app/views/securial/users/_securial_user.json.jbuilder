@@ -6,6 +6,8 @@ json.phone securial_user.phone
 json.username securial_user.username
 json.bio securial_user.bio
 
+json.roles securial_user.roles, partial: "securial/roles/securial_role", as: :securial_role
+
 json.created_at securial_user.created_at
 json.updated_at securial_user.updated_at
 
