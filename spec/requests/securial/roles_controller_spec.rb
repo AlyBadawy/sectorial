@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/securial_roles", type: :request do
+RSpec.describe Securial::RolesController, type: :request do
   let(:securial_role) { create(:securial_role) }
 
   let(:valid_attributes) {
@@ -103,7 +103,10 @@ RSpec.describe "/securial_roles", type: :request do
       end
 
       it "returns http created" do
-        post securial.roles_path, params: { securial_role: valid_attributes }
+        post securial.roles_path,
+             params: { securial_role: valid_attributes },
+             headers: @valid_headers,
+             as: :json
         expect(response).to have_http_status(:created)
       end
 

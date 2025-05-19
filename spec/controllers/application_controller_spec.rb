@@ -4,6 +4,9 @@ module Securial
   RSpec.describe ApplicationController, type: :request do
     before do
       class TestController < ApplicationController # rubocop:disable RSpec/LeakyConstantDeclaration
+        include Identity
+        skip_authentication! only: %i[not_found bad_request]
+
         def not_found
           raise ActiveRecord::RecordNotFound
         end
