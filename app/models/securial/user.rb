@@ -72,6 +72,6 @@ module Securial
     has_many :role_assignments, dependent: :destroy
     has_many :roles, through: :role_assignments
 
-    # has_many :sessions, dependent: :destroy
+    has_many :sessions, dependent: :destroy
   end
 end

@@ -1,5 +1,6 @@
 require_relative "./logger"
 require_relative "./middleware/request_logger_tag"
+require "jwt"
 
 module Securial
   class Engine < ::Rails::Engine
