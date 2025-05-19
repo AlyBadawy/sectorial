@@ -1,7 +1,7 @@
 module Securial
   module JwtHelper
     def self.encode(session)
-      return nil unless session && session.class == Session
+      return nil unless session && session.class == Securial::Session
 
       base_payload = {
         jti: session.id,
