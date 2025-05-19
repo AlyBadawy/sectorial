@@ -41,8 +41,8 @@ RSpec.describe "/securial_users", type: :request do
       expect(res_body.keys).to match_array(%w[records count url])
       records = res_body["records"]
       expect(records).to be_an(Array)
-      expect(records.length).to eq(1)
-      expect(records[0]["username"]).to eq(securial_user.username)
+      expect(records.length).to eq(2)
+      expect(records[1]["username"]).to eq(securial_user.username)
     end
   end
 

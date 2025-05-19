@@ -2,6 +2,8 @@ module Securial
   class ApplicationController < ActionController::API
     prepend_view_path Securial::Engine.root.join("app", "views")
 
+    include Identity
+
     rescue_from ActiveRecord::RecordNotFound, with: :render_404
     rescue_from ActionController::ParameterMissing, with: :render_400
 

@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "bcrypt", "~> 3.1"
   spec.add_dependency "jbuilder", "~> 2.11"
+  spec.add_dependency "jwt"
 
   spec.add_development_dependency "rubocop"
   spec.add_development_dependency "rubocop-rspec"

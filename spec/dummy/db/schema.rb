@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_18_122749) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_19_075407) do
   create_table "securial_role_assignments", id: :string, force: :cascade do |t|
     t.string "user_id", null: false
     t.string "role_id", null: false
@@ -26,6 +26,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_18_122749) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["role_name"], name: "index_securial_roles_on_role_name", unique: true
+  end
+
+  create_table "securial_sessions", id: :string, force: :cascade do |t|
+    t.string "user_id", null: false
+    t.string "ip_address", null: false
+    t.string "user_agent", null: false
+    t.string "refresh_token", null: false
+    t.integer "refresh_count", default: 0
+    t.datetime "last_refreshed_at"
+    t.datetime "refresh_token_expires_at"
+    t.boolean "revoked", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_securial_sessions_on_user_id"
   end
 
   create_table "securial_users", id: :string, force: :cascade do |t|
@@ -44,4 +58,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_18_122749) do
 
   add_foreign_key "securial_role_assignments", "securial_roles", column: "role_id"
   add_foreign_key "securial_role_assignments", "securial_users", column: "user_id"
+  add_foreign_key "securial_sessions", "securial_users", column: "user_id"
 end
