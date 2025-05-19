@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/sessions", type: :request do
+RSpec.describe Securial::SessionsController, type: :request do
   describe "GET '/'" do
     it "lists all sessions for the current user" do
       create(:securial_session, user: @signed_in_user)

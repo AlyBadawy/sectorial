@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/securial_users", type: :request do
+RSpec.describe Securial::UsersController, type: :request do
   let(:securial_user) { create(:securial_user) }
   let(:valid_attributes) {
     {

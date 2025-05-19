@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/securial_roles", type: :request do
+RSpec.describe Securial::RolesController, type: :request do
   let(:securial_role) { create(:securial_role) }
 
   let(:valid_attributes) {

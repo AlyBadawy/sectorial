@@ -35,7 +35,7 @@ module Securial
 
     def delete_account
       @securial_user = Current.user
-      if @securial_user.authenticate(params[:user][:current_password])
+      if @securial_user.authenticate(params.expect(securial_user: [:current_password]).dig(:current_password))
         @securial_user.destroy
         render json: { message: "Account deleted successfully" }, status: :ok
       else
