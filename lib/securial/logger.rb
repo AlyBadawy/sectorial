@@ -30,8 +30,8 @@ module Securial
     end
 
     def self.resolve_log_level
-      file_level = Securial.configuration.file_log_level
-      stdout_level = Securial.configuration.stdout_log_level
+      file_level = Securial.configuration.log_file_level
+      stdout_level = Securial.configuration.log_stdout_level
 
       # Use the lower (more verbose) level of the two
       levels = [file_level, stdout_level].compact.map do |lvl|

@@ -5,7 +5,7 @@ module Securial
 
       base_payload = {
         jti: session.id,
-        exp: 3.minutes.from_now.to_i,
+        exp: expiry_duration.from_now.to_i,
         sub: "session-access-token",
         refresh_count: session.refresh_count,
 
@@ -17,18 +17,29 @@ module Securial
       }
 
       payload = base_payload.merge(session_payload)
-
-      token = JWT::Token.new(payload: payload, header: { kid: "hmac" })
-      token.sign!(algorithm: "HS256", key: "secret")
-
-      token.jwt
+      JWT.encode(payload, secret, algorithm, { kid: "hmac" })
     end
 
     def self.decode(token)
-      encoded_token = JWT::EncodedToken.new(token)
-      encoded_token.verify_signature!(algorithm: "HS256", key: "secret")
-      encoded_token.verify_claims!(:exp, :jti)
-      encoded_token.payload
+      decoded = JWT.decode(token, secret, true, { algorithm: algorithm, verify_jti: true, iss: "securial" })
+      decoded.first
+    end
+
+    private
+
+    def self.secret
+      Securial.validate_session_secret!
+      Securial.configuration.session_secret
+    end
+
+    def self.algorithm
+      Securial.validate_session_algorithm!
+      Securial.configuration.session_algorithm.to_s.upcase
+    end
+
+    def self.expiry_duration
+      Securial.validate_session_expiry_duration!
+      Securial.configuration.session_expiration_duration
     end
   end
 end
