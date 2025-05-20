@@ -10,8 +10,8 @@ RSpec.describe Securial::Logger do
     allow(Securial).to receive(:configuration).and_return(OpenStruct.new(
       log_to_file: false,
       log_to_stdout: false,
-      file_log_level: :info,
-      stdout_log_level: :debug,
+      log_file_level: :info,
+      log_stdout_level: :debug,
     ))
     FileUtils.rm_f(log_path)
   end
@@ -73,7 +73,7 @@ RSpec.describe Securial::Logger do
 
     describe ".resolve_log_level" do
       it "returns the lower of the two log levels" do
-        allow(Securial.configuration).to receive_messages(file_log_level: :warn, stdout_log_level: :debug)
+        allow(Securial.configuration).to receive_messages(log_file_level: :warn, log_stdout_level: :debug)
 
         level = described_class.resolve_log_level
         expect(level).to eq(::Logger::DEBUG)
@@ -84,8 +84,8 @@ RSpec.describe Securial::Logger do
   describe ".resolve_log_level" do
     before do
       allow(Securial).to receive(:configuration).and_return(OpenStruct.new(
-        file_log_level: nil,
-        stdout_log_level: nil,
+        log_file_level: nil,
+        log_stdout_level: nil,
       ))
     end
 
@@ -94,19 +94,19 @@ RSpec.describe Securial::Logger do
     end
 
     it "returns the file level when only file level is set" do
-      allow(Securial.configuration).to receive(:file_log_level).and_return(:debug)
+      allow(Securial.configuration).to receive(:log_file_level).and_return(:debug)
       expect(described_class.resolve_log_level).to eq(::Logger::DEBUG)
     end
 
     it "returns the stdout level when only stdout level is set" do
-      allow(Securial.configuration).to receive(:stdout_log_level).and_return(:error)
+      allow(Securial.configuration).to receive(:log_stdout_level).and_return(:error)
       expect(described_class.resolve_log_level).to eq(::Logger::ERROR)
     end
 
     it "returns the more verbose level when both levels are set" do
       allow(Securial.configuration).to receive_messages(
-        file_log_level: :warn,
-        stdout_log_level: :debug,
+        log_file_level: :warn,
+        log_stdout_level: :debug,
       )
 
       expect(described_class.resolve_log_level).to eq(::Logger::DEBUG)
@@ -114,8 +114,8 @@ RSpec.describe Securial::Logger do
 
     it "handles invalid log levels by returning INFO" do
       allow(Securial.configuration).to receive_messages(
-        file_log_level: :invalid,
-        stdout_log_level: nil,
+        log_file_level: :invalid,
+        log_stdout_level: nil,
       )
       expect(described_class.resolve_log_level).to eq(::Logger::INFO)
     end

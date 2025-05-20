@@ -2,7 +2,6 @@
 # You can customize logging behavior here.
 
 Securial.configure do |config|
-
   ##### Logging Configuration
   ## Enable or disable logging to file
   # Set to true to log to a file, false to disable file logging
@@ -13,10 +12,10 @@ Securial.configure do |config|
   config.log_to_stdout = false # Enable or disable logging to STDOUT
 
   # Set log level for file logger: :debug, :info, :warn, :error, :fatal, or :unknown
-  config.file_log_level = :info
+  config.log_file_level = :info
 
   # Set log level for stdout logger
-  config.stdout_log_level = :info
+  config.log_stdout_level = :info
 
   ##### User Roles
   ## Set the role for admin users
@@ -27,4 +26,26 @@ Securial.configure do |config|
   # will have access to the admin dashboard and other admin features.
   # in the `/securial/superusers` namespace.
   config.admin_role = :admin
+
+  #### Session Configuration
+  ## Set the session expiration duration
+  # This is the time after which a session will be considered expired.
+  # After this time, the session will be invalidated and the user
+  # will need to log in again to refresh the session.
+  # The expiration time is set in seconds, minutes, or hours.
+  # The default is 3 minutes.
+  config.session_expiration_duration = 3.minutes
+
+  ## Set the session secret
+  # This secret is used to sign the session tokens and ensure
+  # that they cannot be tampered with. It is important to keep this
+  # secret secure and not share it with anyone.
+  # The default is "secret".
+  config.session_secret = "secret"
+
+  ## Set the session algorithm
+  # This is the algorithm used to sign the session tokens.
+  # The default is :hs256, which is a HMAC SHA-256 algorithm.
+  # Other options include :hs256, :hs384, and :hs512
+  config.session_algorithm = :hs256
 end

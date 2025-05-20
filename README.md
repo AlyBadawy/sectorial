@@ -61,8 +61,14 @@ You can configure Securial in the generated initializer:
 Securial.configure do |config|
   config.log_to_file = true # Enable/disable logging to file
   config.log_to_stdout = false # Enable/disable logging to stdout
-  config.file_log_level = :info # Set log level for file logging
-  config.stdout_log_level = :info # Set log level for stdout logging
+  config.log_file_level = :info # Set log level for file logging
+  config.log_stdout_level = :info # Set log level for stdout logging
+
+  config.admin_role = :admin # Set the role for admin users
+
+  config.session_expiration_duration = 3.minutes # Set the session expiration duration
+  config.session_secret = "secret" # Set the session secret
+  config.session_algorithm = :hs256 # Set the session algorithm
   ...
 end
 ```
