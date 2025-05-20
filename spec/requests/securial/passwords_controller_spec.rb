@@ -21,7 +21,7 @@ RSpec.describe Securial::PasswordsController, type: :request do
     it "Doesn't send an email if the user doesn't exist" do
       allow(Securial::PasswordsMailer).to receive(:reset).and_call_original
       post securial.forgot_password_url, params: { email_address: "wrong@email.com" }
-      expect(Securial::PasswordsMailer).to have_received(:reset).with(@signed_in_user).exactly(0)
+      expect(Securial::PasswordsMailer).not_to have_received(:reset)
     end
   end
 
