@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Securial::PasswordsController, type: :request do
   describe "POST /forgot" do
-    it "Always shows a successful response" do
+    it "always returns 200 OK response regardless of whether a user exists." do
       post securial.forgot_password_url, params: { email_address: @signed_in_user.email_address }
       expect(response).to be_successful
       expect(JSON.parse(response.body)).to eq(
