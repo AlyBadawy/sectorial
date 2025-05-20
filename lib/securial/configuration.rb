@@ -1,16 +1,20 @@
 module Securial
   class Configuration
     attr_accessor :log_to_file, :log_to_stdout
-    attr_accessor :file_log_level, :stdout_log_level
-    attr_accessor :admin_role, :user_role
+    attr_accessor :log_file_level, :log_stdout_level
+    attr_accessor :admin_role
+    attr_accessor :session_expiration_duration
+    attr_accessor :session_secret, :session_algorithm
 
     def initialize
       @log_to_file = false
       @log_to_stdout = false
-      @file_log_level = :info
-      @stdout_log_level = :info
+      @log_file_level = :info
+      @log_stdout_level = :info
       @admin_role = :admin
-      @user_role = :user
+      @session_expiration_duration = 3.minutes
+      @session_secret = "secret"
+      @session_algorithm = :hs256
     end
   end
 end

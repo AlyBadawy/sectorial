@@ -51,7 +51,7 @@ module Securial
         it "returns JSON error message of Invalid encoding" do
           get "/securial/test", headers: { "Authorization" => "Bearer invalid token" }, as: :json
 
-          expect(JSON.parse(response.body)).to include("error" => "Invalid token: Invalid segment encoding")
+          expect(JSON.parse(response.body)).to include("error" => "Invalid token: Not enough or too many segments")
         end
       end
 
