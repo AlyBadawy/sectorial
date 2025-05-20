@@ -124,6 +124,27 @@ API responses are consistent and JSON-formatted:
 
 ## Development
 
+### Custom Error Types
+
+#### Configuration Errors
+
+Located in `app/errors/securial/config_errors.rb`, these errors handle configuration-related issues in the Securial authentication system.
+
+#### Session Errors
+
+Located in `app/errors/securial/session_errors.rb`, these errors handle authentication and session-related issues such as:
+
+- Invalid credentials
+- Expired sessions
+- Token validation failures
+- Session timeouts
+
+These custom error types help provide clear and actionable error messages when issues occur during authentication and authorization processes.
+
+Each error type includes specific error codes and messages to help with debugging and proper error handling in your application.
+
+### Tests:
+
 To run tests:
 
 ```bash
