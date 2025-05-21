@@ -1,11 +1,12 @@
 PATH
   remote: .
   specs:
-    securial (0.3.0)
+    securial (0.3.1)
       bcrypt (~> 3.1)
       jbuilder (~> 2.11)
-      jwt
-      rails (~> 8.0, >= 8.0.2)
+      jwt (~> 2.10)
+      ostruct (~> 0.6)
+      rails (~> 8.0)
 
 GEM
   remote: https://rubygems.org/
@@ -298,12 +299,12 @@ GEM
       lint_roller (~> 1.1)
       rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.38.0, < 2.0)
-    rubocop-rails (2.31.0)
+    rubocop-rails (2.32.0)
       activesupport (>= 4.2.0)
       lint_roller (~> 1.1)
       rack (>= 1.1)
       rubocop (>= 1.75.0, < 2.0)
-      rubocop-ast (>= 1.38.0, < 2.0)
+      rubocop-ast (>= 1.44.0, < 2.0)
     rubocop-rails-omakase (1.1.0)
       rubocop (>= 1.72)
       rubocop-performance (>= 1.24)
@@ -352,31 +353,30 @@ PLATFORMS
 
 DEPENDENCIES
   brakeman
-  capybara
-  coveralls-lcov
-  database_cleaner
+  capybara (~> 3.40)
+  coveralls-lcov (~> 1.7)
+  database_cleaner (~> 2.1)
   debug
   dotenv-rails
-  factory_bot_rails
-  faker
+  factory_bot_rails (~> 6.4)
+  faker (~> 3.5)
   fasterer
-  generator_spec
-  ostruct
-  overcommit
+  generator_spec (~> 0.10)
+  overcommit (~> 0.67)
   propshaft
   pry-byebug
   pry-rails
   puma
-  rspec-rails
-  rubocop
-  rubocop-config-prettier
-  rubocop-performance
-  rubocop-rails
-  rubocop-rails-omakase
-  rubocop-rspec
+  rspec-rails (~> 7.1)
+  rubocop (~> 1.75)
+  rubocop-config-prettier (~> 0.1.13)
+  rubocop-performance (~> 1.25)
+  rubocop-rails (~> 2.32)
+  rubocop-rails-omakase (~> 1.1)
+  rubocop-rspec (~> 3.6)
   securial!
-  shoulda-matchers
-  simplecov
+  shoulda-matchers (~> 6.5)
+  simplecov (~> 0.22)
   simplecov-lcov (~> 0.8.0)
   sqlite3
 

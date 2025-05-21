@@ -7,14 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] https://github.com/AlyBadawy/Securial/compare/v0.3.0...main
 
+## [0.3.1] - 2025-05-20
+
 ### Added
 
-- Initial setup for JWT-based authentication.
-- Rails engine scaffolding for easy integration.
+- Log when the engine is mounted and started
 
 ### Changed
 
-- Updated README with installation and usage instructions.
+- Initial config to enable logging
+- Structure of runtime and development dependencies
 
 ---
 

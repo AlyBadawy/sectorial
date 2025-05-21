@@ -21,13 +21,29 @@ Gem::Specification.new do |spec|
   end
 
   spec.required_ruby_version = ">= 3.4.1"
-  spec.add_runtime_dependency "rails", "~> 8.0", ">= 8.0.2"
+
+  spec.add_runtime_dependency "rails", "~> 8.0"
 
   spec.add_dependency "bcrypt", "~> 3.1"
   spec.add_dependency "jbuilder", "~> 2.11"
-  spec.add_dependency "jwt"
+  spec.add_dependency "jwt", "~> 2.10"
+  spec.add_dependency "ostruct", "~> 0.6"
 
-  spec.add_development_dependency "rubocop"
-  spec.add_development_dependency "rubocop-rspec"
-  spec.add_development_dependency "factory_bot_rails"
+  spec.add_development_dependency "capybara", "~> 3.40"
+  spec.add_development_dependency "coveralls-lcov", "~> 1.7"
+  spec.add_development_dependency "database_cleaner", "~> 2.1"
+  spec.add_development_dependency "factory_bot_rails", "~> 6.4"
+  spec.add_development_dependency "faker", "~> 3.5"
+  spec.add_development_dependency "generator_spec", "~> 0.10"
+  spec.add_development_dependency "overcommit", "~> 0.67"
+  spec.add_development_dependency "rubocop", "~> 1.75"
+  spec.add_development_dependency "rubocop-config-prettier", "~> 0.1.13"
+  spec.add_development_dependency "rubocop-performance", "~> 1.25"
+  spec.add_development_dependency "rubocop-rails", "~> 2.32"
+  spec.add_development_dependency "rubocop-rails-omakase", "~> 1.1"
+  spec.add_development_dependency "rubocop-rspec", "~> 3.6"
+  spec.add_development_dependency "rspec-rails", '~> 7.1'
+  spec.add_development_dependency "shoulda-matchers", "~> 6.5"
+  spec.add_development_dependency "simplecov", "~> 0.22"
+  spec.add_development_dependency "simplecov-lcov", "~> 0.8.0"
 end

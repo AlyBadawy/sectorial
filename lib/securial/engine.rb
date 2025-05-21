@@ -6,6 +6,14 @@ module Securial
   class Engine < ::Rails::Engine
     isolate_namespace Securial
 
+    initializer "securial.logger" do
+      Securial.const_set(:ENGINE_LOGGER, Securial::Logger.build)
+    end
+
+    initializer "securial.engine_initialized" do |app|
+      Securial::ENGINE_LOGGER.info("[Securial] Engine mounted. Host app: #{app.class.name}")
+    end
+
     initializer "securial.factories", after: "factory_bot.set_factory_paths" do
       if defined?(FactoryBot)
         FactoryBot.definition_file_paths << Engine.root.join("lib", "securial", "factories")
@@ -38,12 +46,14 @@ module Securial
       g.template_engine :jbuilder
     end
 
-    initializer "securial.logger" do
-      Securial.const_set(:ENGINE_LOGGER, Securial::Logger.build)
-    end
-
     initializer "securial.middleware" do |app|
       app.middleware.use Securial::Middleware::RequestLoggerTag
+    end
+
+    initializer "securial.log_engine_loaded", after: :load_config_initializers do
+      Rails.application.config.after_initialize do
+        Securial::ENGINE_LOGGER.info("[Securial] Engine fully initialized in #{Rails.env} environment.")
+      end
     end
   end
 end
