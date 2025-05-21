@@ -5,11 +5,11 @@ Securial.configure do |config|
   ##### Logging Configuration
   ## Enable or disable logging to file
   # Set to true to log to a file, false to disable file logging
-  config.log_to_file = false
+  config.log_to_file = true
 
   ## Enable or disable logging to STDOUT
   # Set to true to log to STDOUT, false to disable STDOUT logging
-  config.log_to_stdout = false # Enable or disable logging to STDOUT
+  config.log_to_stdout = true # Enable or disable logging to STDOUT
 
   # Set log level for file logger: :debug, :info, :warn, :error, :fatal, or :unknown
   config.log_file_level = :info

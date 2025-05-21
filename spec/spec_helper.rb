@@ -1,3 +1,8 @@
+require "factory_bot_rails"
+require "generator_spec"
+require "shoulda-matchers"
+require "faker"
+
 require "simplecov"
 require "simplecov-lcov"
 

@@ -7,8 +7,8 @@ module Securial
     attr_accessor :session_secret, :session_algorithm
 
     def initialize
-      @log_to_file = false
-      @log_to_stdout = false
+      @log_to_file = !Rails.env.test?
+      @log_to_stdout = !Rails.env.test?
       @log_file_level = :info
       @log_stdout_level = :info
       @admin_role = :admin
