@@ -41,7 +41,7 @@ module Securial
         # Generate controller from template
         say_status(:scaffold, "controller", :cyan) unless Rails.env.test?
         say_status(status_behavior, "#{indent}#{controller_path}", status_color) unless Rails.env.test?
-        template("controller.rb", controller_path, verbose: false)
+        template("controller.erb", controller_path, verbose: false)
 
         # Generate views
         say_status(:scaffold, "JBuilder views", :cyan) unless Rails.env.test?
@@ -58,11 +58,11 @@ module Securial
 
         # Generate request specs
         say_status(status_behavior, "#{indent}#{request_spec_path}", status_color) unless Rails.env.test?
-        template("request_spec.rb", request_spec_path, verbose: false)
+        template("request_spec.erb", request_spec_path, verbose: false)
 
         # Generate routing specs
         say_status(status_behavior, "#{indent}#{routing_spec_path}", status_color) unless Rails.env.test?
-        template("routing_spec.rb", routing_spec_path, verbose: false)
+        template("routing_spec.erb", routing_spec_path, verbose: false)
 
         say_status(:success, "Scaffold complete ✨✨", :green) unless Rails.env.test?
       end
@@ -126,7 +126,7 @@ module Securial
         routes_path = File.join(root_path, "config/routes.rb")
 
         route_config = "resources :#{plain_plural_name}"
-        template("routes.rb", routes_path, verbose: false) unless File.exist?(routes_path)
+        template("routes.erb", routes_path, verbose: false) unless File.exist?(routes_path)
 
         if behavior == :invoke
           inject_into_file routes_path,
