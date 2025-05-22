@@ -7,7 +7,7 @@ module Securial
       let (:mail) { described_class.reset_password(user) }
 
       it "renders the headers" do
-        expect(mail.subject).to eq("Reset your password")
+        expect(mail.subject).to eq("SECURIAL: Password Reset Instructions")
         expect(mail.to).to eq([user.email_address])
         expect(mail.from).to eq(["no-reply@example.com"])
       end
