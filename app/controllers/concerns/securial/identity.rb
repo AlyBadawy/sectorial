@@ -26,6 +26,8 @@ module Securial
     private
 
     def authenticate_user!
+      return if mailer_preview?
+
       auth_header = request.headers["Authorization"]
       if auth_header.present? && auth_header.start_with?("Bearer ")
         token = auth_header.split(" ").last
@@ -54,6 +56,14 @@ module Securial
 
     def create_jwt_for_current_session
       AuthHelper.encode(Current.session)
+    end
+
+    def mailer_preview?
+      controller_path = controller_name || request.path
+      action_name = params[:action]
+
+      controller_path.start_with?("rails/mailers") ||
+        defined?(Rails::MailersController) && self.is_a?(Rails::MailersController)
     end
   end
 end

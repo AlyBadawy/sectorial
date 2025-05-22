@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Securial::Role, type: :model do
   describe "validations" do
     it { is_expected.to validate_presence_of(:role_name) }
-    it { is_expected.to validate_uniqueness_of(:role_name) }
+    it { is_expected.to validate_uniqueness_of(:role_name).case_insensitive }
   end
 
   describe "normalization" do
