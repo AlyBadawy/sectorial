@@ -261,4 +261,96 @@ RSpec.describe Securial do
       end
     end
   end
+
+  describe ".validate_mailer_sender!" do
+    around do |example|
+      described_class.configuration = Securial::Configuration.new
+      example.run
+    end
+
+    context 'when mailer_sender is not set' do
+      it 'raises ConfigMailerSenderError' do
+        described_class.configuration.mailer_sender = nil
+        expect {
+          described_class.validate_mailer_sender!
+        }.to raise_error(
+          Securial::ConfigErrors::ConfigMailerSenderError,
+          'Mailer sender is not set.'
+        )
+      end
+    end
+
+    context 'when mailer_sender is blank' do
+      it 'raises ConfigMailerSenderError' do
+        described_class.configuration.mailer_sender = ''
+        expect {
+          described_class.validate_mailer_sender!
+        }.to raise_error(
+          Securial::ConfigErrors::ConfigMailerSenderError,
+          'Mailer sender is not set.'
+        )
+      end
+    end
+
+    context 'when mailer_sender is not a valid email' do
+      it 'raises ConfigMailerSenderError' do
+        described_class.configuration.mailer_sender = 'invalid-email'
+        expect {
+          described_class.validate_mailer_sender!
+        }.to raise_error(
+          Securial::ConfigErrors::ConfigMailerSenderError,
+          'Mailer sender is not a valid email address.'
+        )
+      end
+    end
+
+    context 'when mailer_sender is valid' do
+      it 'does not raise an error' do
+        described_class.configuration.mailer_sender = 'valid@example.com'
+        expect {
+          described_class.validate_mailer_sender!
+        }.not_to raise_error
+      end
+    end
+  end
+
+  describe "validate_password_config!" do
+    around do |example|
+      described_class.configuration = Securial::Configuration.new
+      example.run
+    end
+
+    context 'when password_reset_email_subject is not set' do
+      it 'raises ConfigMailerSenderError' do
+        described_class.configuration.password_reset_email_subject = nil
+        expect {
+          described_class.validate_password_config!
+        }.to raise_error(
+          Securial::ConfigErrors::ConfigMailerSenderError,
+          'Password reset email subject is not set.'
+        )
+      end
+    end
+
+    context 'when password_reset_email_subject is blank' do
+      it 'raises ConfigMailerSenderError' do
+        described_class.configuration.password_reset_email_subject = ''
+        expect {
+          described_class.validate_password_config!
+        }.to raise_error(
+          Securial::ConfigErrors::ConfigMailerSenderError,
+          'Password reset email subject is not set.'
+        )
+      end
+    end
+
+    context 'when password_reset_email_subject is valid' do
+      it 'does not raise an error' do
+        described_class.configuration.password_reset_email_subject = 'Reset Your Password'
+        expect {
+          described_class.validate_password_config!
+        }.not_to raise_error
+      end
+    end
+  end
 end

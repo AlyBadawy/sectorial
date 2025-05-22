@@ -70,6 +70,10 @@ Securial.configure do |config|
   config.session_expiration_duration = 3.minutes # Set the session expiration duration
   config.session_secret = "secret" # Set the session secret
   config.session_algorithm = :hs256 # Set the session algorithm
+
+  config.mailer_sender = "no-reply@example.com" # Set the mailer sender address
+
+  config.password_reset_email_subject = "Securial: Password Reset Instructions" # Set the password reset email subject
   ...
 end
 ```
