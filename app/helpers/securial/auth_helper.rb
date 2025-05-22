@@ -1,5 +1,5 @@
 module Securial
-  module JwtHelper
+  module AuthHelper
     class << self
       def encode(session)
         return nil unless session && session.class == Securial::Session

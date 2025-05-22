@@ -24,6 +24,16 @@ module Securial
       require_relative "../generators/factory_bot/model/model_generator"
     end
 
+    initializer "securial.extend_application_controller" do
+      ActiveSupport.on_load(:action_controller_base) do
+        include Securial::Identity
+      end
+
+      ActiveSupport.on_load(:action_controller_api) do
+        include Securial::Identity
+      end
+    end
+
     config.generators.api_only = true
 
     config.autoload_paths += Dir["#{config.root}/lib/generators"]

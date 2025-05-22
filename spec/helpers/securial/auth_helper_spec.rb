@@ -1,7 +1,7 @@
 require "rails_helper"
 
 module Securial
-  RSpec.describe JwtHelper, type: :helper do
+  RSpec.describe AuthHelper, type: :helper do
     let(:securial_session) { create(:securial_session) }
 
     describe "The .encode class method" do

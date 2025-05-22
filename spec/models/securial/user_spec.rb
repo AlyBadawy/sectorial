@@ -104,5 +104,41 @@ module Securial
         expect(described_class.authenticate_by(email_address: user.email_address, password: "secure_password")).to eq(user)
       end
     end
+
+    describe '#is_admin?' do
+      let(:user) { create(:securial_user) }
+      let(:admin_role) { create(:securial_role, role_name: Securial.configuration.admin_role.to_s.strip.titleize) }
+
+      context 'when user has admin role' do
+        before do
+          user.roles << admin_role
+        end
+
+        it 'returns true' do
+          expect(user.is_admin?).to be true
+        end
+      end
+
+      context 'when user does not have admin role' do
+        it 'returns false' do
+          expect(user.is_admin?).to be false
+        end
+      end
+
+      context 'when admin role name has different casing' do
+        before do
+          Securial.configuration.admin_role = 'AdMiN'
+          user.roles << admin_role
+        end
+
+        after do
+          Securial.configuration = Securial::Configuration.new
+        end
+
+        it 'still identifies admin correctly' do
+          expect(user.is_admin?).to be true
+        end
+      end
+    end
   end
 end
