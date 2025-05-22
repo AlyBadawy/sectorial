@@ -9,7 +9,7 @@ module FactoryBot
       argument :attributes, type: :array, default: [], banner: "field[:type] field[:type]"
 
       def create_factory_file
-        template "factory.rb", File.join("lib/securial/factories/securial", "#{file_name.pluralize}.rb")
+        template "factory.erb", File.join("lib/securial/factories/securial", "#{file_name.pluralize}.rb")
       end
 
       # Helper method accessible in the template
@@ -20,9 +20,9 @@ module FactoryBot
           integer: "1",
           float: "1.5",
           decimal: '"9.99"',
-          datetime: "Time.now",
-          time: "Time.now",
-          date: "Time.now",
+          datetime: "Time.zone.now",
+          time: "Time.zone.now",
+          date: "Time.zone.now",
           boolean: "false",
         }
       end

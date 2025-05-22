@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Refactor password reset functionality to use SecurialMailer and update related tests
+- Use ERB for templates to pass codeQL
 
 ## [0.3.1] - 2025-05-20 - https://github.com/AlyBadawy/Securial/compare/v0.3.0...v0.3.1
 
