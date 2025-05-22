@@ -1,10 +1,10 @@
 require "rails_helper"
 
 module Securial
-  RSpec.describe PasswordsMailer, type: :mailer do
-    describe "#reset" do
+  RSpec.describe SecurialMailer, type: :mailer do
+    describe "#reset_password" do
       let (:user) { create(:securial_user) }
-      let (:mail) { described_class.reset(user) }
+      let (:mail) { described_class.reset_password(user) }
 
       it "renders the headers" do
         expect(mail.subject).to eq("Reset your password")

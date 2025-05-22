@@ -5,7 +5,7 @@ module Securial
 
     def forgot_password
       if user = User.find_by(email_address: params.require(:email_address))
-        PasswordsMailer.reset(user).deliver_later
+        SecurialMailer.reset_password(user).deliver_later
       end
 
       render status: :ok, json: { message: "Password reset instructions sent (if user with that email address exists)." }
