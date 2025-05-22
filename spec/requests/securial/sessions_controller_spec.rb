@@ -74,7 +74,7 @@ RSpec.describe Securial::SessionsController, type: :request do
     let(:new_user) { create(:securial_user, password: "password") }
     let(:new_session) { create(:securial_session, user: new_user) }
     let(:new_valid_headers) {
-      token = JwtHelper.encode(new_session)
+      token = AuthHelper.encode(new_session)
       { "Authorization" => "Bearer #{token}" }
     }
     let(:valid_attributes) {
