@@ -18,6 +18,8 @@ module Securial
       validate_session_expiry_duration!
       validate_session_algorithm!
       validate_session_secret!
+      validate_mailer_sender!
+      validate_password_config!
     end
 
     # Returns the pluralized form of the admin role.
@@ -66,6 +68,27 @@ module Securial
         error_message = "Session secret is not set."
         Securial::ENGINE_LOGGER.error(error_message)
         raise Securial::ConfigErrors::ConfigSessionSecretError, error_message
+      end
+    end
+
+    def validate_mailer_sender!
+      if configuration.mailer_sender.blank?
+        error_message = "Mailer sender is not set."
+        Securial::ENGINE_LOGGER.error(error_message)
+        raise Securial::ConfigErrors::ConfigMailerSenderError, error_message
+      end
+      if configuration.mailer_sender !~  URI::MailTo::EMAIL_REGEXP
+        error_message = "Mailer sender is not a valid email address."
+        Securial::ENGINE_LOGGER.error(error_message)
+        raise Securial::ConfigErrors::ConfigMailerSenderError, error_message
+      end
+    end
+
+    def validate_password_config!
+      if configuration.password_reset_email_subject.blank?
+        error_message = "Password reset email subject is not set."
+        Securial::ENGINE_LOGGER.error(error_message)
+        raise Securial::ConfigErrors::ConfigMailerSenderError, error_message
       end
     end
   end

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] https://github.com/AlyBadawy/Securial/compare/v0.3.1...main
 
+### Added
+
+- Add Password reset email subject to Securial configuration
+- Add the SecurialMailer sender email address to Securial configuration
+
 ### Changed
 
 - Refactor password reset functionality to use SecurialMailer and update related tests
