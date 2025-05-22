@@ -42,6 +42,7 @@ This will:
 - Create an initializer at `config/initializers/securial.rb`
 - Set up a log file at `log/securial.log`
 - Copy the migration files to your host Rails application
+- Automatically included `Securial::Identity` concern in the ApplicationController of the host application. (read more about [Securial::Identity Concern](https://github.com/AlyBadawy/Securial/wiki/Securial::Identity-concern))
 
 ### 3. Run the migrations:
 

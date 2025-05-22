@@ -6,8 +6,18 @@ module Securial
       class TestController < ApplicationController # rubocop:disable RSpec/LeakyConstantDeclaration
         include Identity
 
-        def index
+        before_action :authenticate_admin!, only: [:admin]
+
+        def authenticate
           render json: { message: "Success" }
+        end
+
+        def current
+          render json: { user_id: current_user&.id }
+        end
+
+        def admin
+          render json: { message: "Admin access granted" }
         end
       end
 
@@ -16,7 +26,9 @@ module Securial
       end
 
       Engine.routes.draw do
-        get "/test", to: "test#index"
+        get "/authenticate", to: "test#authenticate"
+        get "/current", to: "test#current"
+        get "/admin", to: "test#admin"
       end
     end
 
@@ -29,14 +41,14 @@ module Securial
     let(:securial_user) { create(:securial_user) }
     let(:securial_session) { create(:securial_session, user: securial_user) }
     let(:valid_headers) {
-      token = JwtHelper.encode(securial_session)
+      token = AuthHelper.encode(securial_session)
       { "Authorization" => "Bearer #{token}" }
     }
 
     describe "GET /test" do
       context "with a valid token" do
         it "returns a successful response" do
-          get "/securial/test", headers: valid_headers, as: :json
+          get "/securial/authenticate", headers: valid_headers, as: :json
           expect(response).to have_http_status(:ok)
           expect(JSON.parse(response.body)).to include("message" => "Success")
         end
@@ -44,12 +56,12 @@ module Securial
 
       context "with an invalid token" do
         it "returns an unauthorized response" do
-          get "/securial/test", headers: { "Authorization" => "Bearer invalid.token" }, as: :json
+          get "/securial/authenticate", headers: { "Authorization" => "Bearer invalid.token" }, as: :json
           expect(response).to have_http_status(:unauthorized)
         end
 
         it "returns JSON error message of Invalid encoding" do
-          get "/securial/test", headers: { "Authorization" => "Bearer invalid token" }, as: :json
+          get "/securial/authenticate", headers: { "Authorization" => "Bearer invalid token" }, as: :json
 
           expect(JSON.parse(response.body)).to include("error" => "Invalid token: Not enough or too many segments")
         end
@@ -57,12 +69,70 @@ module Securial
 
       context "with a missing token" do
         it "returns an unauthorized response" do
-          get "/securial/test", as: :json
+          get "/securial/authenticate", as: :json
           expect(response).to have_http_status(:unauthorized)
         end
 
         it "returns JSON error message of Missing or invalid Authorization header" do
-          get "/securial/test", as: :json
+          get "/securial/authenticate", as: :json
+          expect(JSON.parse(response.body)).to include("error" => "Missing or invalid Authorization header")
+        end
+      end
+    end
+
+    describe '#current_user' do
+      let(:user) { create(:securial_user) }
+      let(:session) { create(:securial_session, user: user) }
+
+      context 'when there is a current session' do
+        before do
+          allow(Securial::Current).to receive(:session).and_return(session)
+        end
+
+        it 'returns the user from the current session' do
+          get "/securial/current", as: :json
+          expect(controller.current_user).to eq(user)
+        end
+      end
+
+      context 'when there is no current session' do
+        before do
+          allow(Securial::Current).to receive(:session).and_return(nil)
+        end
+
+        it 'returns nil' do
+          get "/securial/current", as: :json
+          expect(controller.current_user).to be_nil
+        end
+      end
+    end
+
+    describe "/admin" do
+      context "when the user is an admin" do
+        let(:admin_user) { create(:securial_user, :admin) }
+        let(:admin_session) { create(:securial_session, user: admin_user) }
+
+        it "grants admin access" do
+          valid_admin_headers = { "Authorization" => "Bearer #{AuthHelper.encode(admin_session)}" }
+          get "/securial/admin", headers: valid_admin_headers, as: :json
+          expect(response).to have_http_status(:ok)
+          expect(JSON.parse(response.body)).to include("message" => "Admin access granted")
+        end
+      end
+
+      context "when the user is not an admin" do
+        it "denies admin access" do
+          get "/securial/admin", headers: valid_headers, as: :json
+            expect(response).not_to have_http_status(:ok)
+            expect(response).to have_http_status(:forbidden)
+            expect(JSON.parse(response.body)).to include("error" => "You are not authorized to perform this action")
+        end
+      end
+
+      context "when the user is not authenticated" do
+        it "denies admin access" do
+          get "/securial/admin", as: :json
+          expect(response).to have_http_status(:unauthorized)
           expect(JSON.parse(response.body)).to include("error" => "Missing or invalid Authorization header")
         end
       end

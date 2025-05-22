@@ -7,5 +7,10 @@ FactoryBot.define do
     phone { Faker::PhoneNumber.cell_phone }
     username { Faker::Internet.username(specifier: 3..20) }
     bio { Faker::Lorem.paragraph }
+
+    trait :admin do
+      admin_role = Securial.configuration.admin_role.to_s.strip.titleize
+      roles { [Securial::Role.find_or_create_by(role_name: admin_role)] }
+    end
   end
 end

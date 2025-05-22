@@ -38,7 +38,7 @@ RSpec.configure do |config|
   config.before(:each) do
     @signed_in_user = create(:securial_user)
     @signed_in_session = create(:securial_session, user: @signed_in_user)
-    @valid_token = Securial::JwtHelper.encode(@signed_in_session)
+    @valid_token = Securial::AuthHelper.encode(@signed_in_session)
     @valid_headers = { "Authorization" => "Bearer #{@valid_token}", "User-Agent" => "Ruby/RSpec" }
     @invalid_headers = { "Authorization" => "Bearer bad_token" }
   end

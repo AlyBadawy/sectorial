@@ -73,5 +73,10 @@ module Securial
     has_many :roles, through: :role_assignments
 
     has_many :sessions, dependent: :destroy
+
+
+    def is_admin?
+      roles.exists?(role_name: Securial.configuration.admin_role.to_s.strip.titleize)
+    end
   end
 end
