@@ -18,7 +18,7 @@ module Securial
               uniqueness: { case_sensitive: false },
               length: { maximum: 20 },
               format: {
-                with: RegexHelper::USERNAME_REGEX,
+                with: Securial::RegexHelper::USERNAME_REGEX,
                 message: "can only contain letters, numbers, underscores, and periods, but cannot start with a number or contain consecutive underscores or periods",
               }
 
