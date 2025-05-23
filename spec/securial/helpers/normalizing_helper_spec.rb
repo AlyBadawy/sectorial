@@ -18,7 +18,7 @@ module Securial
       end
 
       context 'with invalid input' do
-        it 'returns nil for empty string' do
+        it 'returns an empty string for empty input' do
           expect(described_class.normalize_email_address('')).to eq("")
         end
 
