@@ -1,6 +1,5 @@
 require "securial/version"
 require "securial/engine"
-require "securial/configuration"
 
 require "jbuilder"
 
