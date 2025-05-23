@@ -11,11 +11,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add Password reset email subject to Securial configuration
 - Add the SecurialMailer sender email address to Securial configuration
+- Include the `Securial::Identity` in the application controller by default
+- Added `Securial::RegexHelper`
+- Added `Securial::RouteInspector` helper with methods to print out the Engine routes.
 
 ### Changed
 
 - Refactor password reset functionality to use SecurialMailer and update related tests
 - Use ERB for templates to pass codeQL
+- Refactor and extract Normalizing helpers
+- Renamed `Securial::JwtHelper` to `Securial::AuthHelper`
+
+### Fixed
+
+- Allow rails internal routes (e.g /rails/info, /rails/mailer, etc.) without authentication
 
 ## [0.3.1] - 2025-05-20 - https://github.com/AlyBadawy/Securial/compare/v0.3.0...v0.3.1
 
@@ -60,7 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.2.0] - 2025-05-15
+## [0.2.0] - 2025-05-15 (Yanked!)
 
 ### Added
 
@@ -76,7 +85,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.1.0] - 2025-05-11
+## [0.1.0] - 2025-05-11 (Yanked!)
 
 ### Added
 
