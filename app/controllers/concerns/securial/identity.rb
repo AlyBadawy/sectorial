@@ -26,6 +26,8 @@ module Securial
     private
 
     def authenticate_user!
+      return if internal_rails_request?
+
       auth_header = request.headers["Authorization"]
       if auth_header.present? && auth_header.start_with?("Bearer ")
         token = auth_header.split(" ").last
@@ -54,6 +56,12 @@ module Securial
 
     def create_jwt_for_current_session
       AuthHelper.encode(Current.session)
+    end
+
+    def internal_rails_request?
+      defined?(Rails::InfoController) && is_a?(Rails::InfoController) ||
+      defined?(Rails::MailersController) && is_a?(Rails::MailersController) ||
+      defined?(Rails::WelcomeController) && is_a?(Rails::WelcomeController)
     end
   end
 end

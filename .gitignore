@@ -18,3 +18,5 @@
 !/coverage/.keep
 
 .byebug_history
+spec/dummy/log/*
+!spec/dummy/log/.keep

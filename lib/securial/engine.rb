@@ -1,4 +1,12 @@
 require_relative "./logger"
+require_relative "./configuration"
+
+require_relative "./helpers/auth_helper"
+require_relative "./helpers/normalizing_helper"
+require_relative "./helpers/regex_helper"
+
+require_relative "./route_inspector"
+
 require_relative "./middleware/request_logger_tag"
 require "jwt"
 
