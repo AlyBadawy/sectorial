@@ -137,5 +137,41 @@ module Securial
         end
       end
     end
+
+    describe "internal Rails requests" do
+      before do
+        Engine.routes.draw do
+          # Add routes for internal Rails paths
+          get "/rails/info", to: "test#authenticate"
+          get "/rails/mailers", to: "test#authenticate"
+          get "/rails/health_check", to: "test#authenticate"
+          get "/test/authenticate", to: "test#authenticate"
+        end
+      end
+
+      it "allows access to Rails info path without authentication" do
+        get "/securial/rails/info", as: :json
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body)).to include("message" => "Success")
+      end
+
+      it "allows access to Rails mailers path without authentication" do
+        get "/securial/rails/mailers", as: :json
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body)).to include("message" => "Success")
+      end
+
+      it "allows access to Rails health check path without authentication" do
+        get "/securial/rails/health_check", as: :json
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body)).to include("message" => "Success")
+      end
+
+      it "requires authentication for non-Rails paths" do
+        get "/securial/test/authenticate", as: :json
+        expect(response).to have_http_status(:unauthorized)
+        expect(JSON.parse(response.body)).to include("error" => "Missing or invalid Authorization header")
+      end
+    end
   end
 end
