@@ -16,27 +16,27 @@ module Securial
 
       # rubocop:disable Rails/Output
       def print_headers(filtered, controller)
-        pp "Securial engine routes:"
-        pp "Total routes: #{filtered.size}"
-        pp "Filtered by controller: #{controller}" if controller
-        pp "Filtered routes: #{filtered.size}" if controller
-        pp "-" * 120
-        pp "#{'Verb'.ljust(8)} #{'Path'.ljust(45)} #{'Controller#Action'.ljust(40)} Name"
-        pp "-" * 120
+        Securial::ENGINE_LOGGER.debug "Securial engine routes:"
+        Securial::ENGINE_LOGGER.debug "Total routes: #{filtered.size}"
+        Securial::ENGINE_LOGGER.debug "Filtered by controller: #{controller}" if controller
+        Securial::ENGINE_LOGGER.debug "Filtered routes: #{filtered.size}" if controller
+        Securial::ENGINE_LOGGER.debug "-" * 120
+        Securial::ENGINE_LOGGER.debug "#{'Verb'.ljust(8)} #{'Path'.ljust(45)} #{'Controller#Action'.ljust(40)} Name"
+        Securial::ENGINE_LOGGER.debug "-" * 120
       end
 
       def print_details(filtered, controller) # rubocop:disable Rails/Output
         if filtered.empty?
           if controller
-            pp "No routes found for controller: #{controller}"
+            Securial::ENGINE_LOGGER.debug "No routes found for controller: #{controller}"
           else
-            pp "No routes found for Securial engine"
+            Securial::ENGINE_LOGGER.debug "No routes found for Securial engine"
           end
-          pp "-" * 120
+          Securial::ENGINE_LOGGER.debug "-" * 120
           return
         end
 
-        pp filtered.map { |r|
+        Securial::ENGINE_LOGGER.debug filtered.map { |r|
           name = r.name || ""
           verb = r.verb.to_s.ljust(8)
           path = r.path.spec.to_s.sub(/\(\.:format\)/, "").ljust(45)

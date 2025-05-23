@@ -59,7 +59,6 @@ module Securial
     end
 
     def internal_rails_request?
-      request.path.include?("/rails/") ||
       defined?(Rails::InfoController) && is_a?(Rails::InfoController) ||
       defined?(Rails::MailersController) && is_a?(Rails::MailersController) ||
       defined?(Rails::WelcomeController) && is_a?(Rails::WelcomeController)

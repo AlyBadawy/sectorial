@@ -22,6 +22,9 @@ module Securial
         get "/test/invalid_encoding", to: "test#invalid_encoding"
         get "/test/expired_signature", to: "test#expired_signature"
       end
+
+      # Mock the logger
+      allow(Securial::ENGINE_LOGGER).to receive(:debug)
     end
 
     after do
@@ -30,50 +33,38 @@ module Securial
       Rails.application.reload_routes!
     end
 
-    def capture_stdout
-      original_stdout = $stdout
-      fake_stdout = StringIO.new
-      $stdout = fake_stdout
-      yield
-      fake_stdout.string
-    ensure
-      $stdout = original_stdout
-    end
-
     describe ".print_routes" do
       it "prints headers and route details" do
-        output = capture_stdout { described_class.print_routes }
+        described_class.print_routes
 
-        expect(output).to include("Verb", "Path", "Controller#Action")
-        expect(output).to include("test#not_found")
-        expect(output).to include("test#bad_request")
-        expect(output).to include("test#invalid_encoding")
-        expect(output).to include("test#expired_signature")
+        expect(Securial::ENGINE_LOGGER).to have_received(:debug).with("Securial engine routes:")
+        expect(Securial::ENGINE_LOGGER).to have_received(:debug).with(/-{120}/).twice
+        expect(Securial::ENGINE_LOGGER).to have_received(:debug).with(/Verb.*Path.*Controller#Action/)
+
+        route_details = /test#not_found|test#bad_request|test#invalid_encoding|test#expired_signature/
+        expect(Securial::ENGINE_LOGGER).to have_received(:debug).with(route_details)
       end
 
       it "prints only matching controller routes when filtered" do
-        output = capture_stdout { described_class.print_routes(controller: "test") }
+        described_class.print_routes(controller: "test")
 
-        expect(output).to include("Filtered by controller: test")
-        expect(output).to include("test#not_found")
-        expect(output).to include("test#bad_request")
-        expect(output).to include("test#invalid_encoding")
-        expect(output).to include("test#expired_signature")
+        expect(Securial::ENGINE_LOGGER).to have_received(:debug).with("Filtered by controller: test")
+        route_details = /test#not_found|test#bad_request|test#invalid_encoding|test#expired_signature/
+        expect(Securial::ENGINE_LOGGER).to have_received(:debug).with(route_details)
       end
 
       it "prints appropriate message when no controller matches" do
-        output = capture_stdout { described_class.print_routes(controller: "fake") }
-
-        expect(output).to include("Filtered by controller: fake")
-        expect(output).to include("No routes found for controller: fake")
+        described_class.print_routes(controller: "fake")
+        expect(Securial::ENGINE_LOGGER).to have_received(:debug).with("Filtered by controller: fake")
+        expect(Securial::ENGINE_LOGGER).to have_received(:debug).with("No routes found for controller: fake")
       end
 
       it "prints appropriate message when no routes exist" do
         Securial::Engine.routes.clear!
 
-        output = capture_stdout { described_class.print_routes }
+        described_class.print_routes
 
-        expect(output).to include("No routes found for Securial engine")
+        expect(Securial::ENGINE_LOGGER).to have_received(:debug).with("No routes found for Securial engine")
       end
     end
   end
