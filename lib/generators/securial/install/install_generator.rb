@@ -10,7 +10,7 @@ module Securial
 
       def copy_initializer
         say_status("copying", "Securial Initializers", :green)
-        template "securial_initializer.erb", "config/initializers/securial.rb"
+        template "securial_initializer.erb", Rails.root.join("config/initializers/securial.rb")
       end
 
       def create_log_file
