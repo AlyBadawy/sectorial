@@ -2,9 +2,9 @@ require "rails_helper"
 require "generators/securial/install/install_generator"
 
 RSpec.describe Securial::Generators::InstallGenerator, type: :generator do
-  let(:destination_root) { Pathname.new(File.expand_path("../../../../tmp", __dir__)) }
+  let(:destination_root) { Pathname.new(File.expand_path(Securial::Engine.root.join("tmp"), __dir__)) }
 
-  destination File.expand_path("../../../../tmp", __FILE__)
+  destination File.expand_path(Securial::Engine.root.join("tmp"), __FILE__)
 
   before do
     prepare_destination
