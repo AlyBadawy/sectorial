@@ -62,7 +62,7 @@ RSpec.describe Securial::Generators::InstallGenerator, type: :generator do
     it "creates the initializer file" do
       run_generator
 
-      assert_file Rails.root.join("config/initializers/securial.rb") do |content|
+      assert_file File.join(destination_root, "config", "initializers", "securial.rb") do |content|
         assert_match(/Securial.configure do \|config\|/, content)
         assert_match(/config.log_to_file = true/, content)
         assert_match(/config.log_to_stdout = true/, content)
