@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Allow rails internal routes (e.g /rails/info, /rails/mailers, etc.) without authentication
+- destination root of the initializer in tests was invalid.
 
 ## [0.3.1] - 2025-05-20 - https://github.com/AlyBadawy/Securial/compare/v0.3.0...v0.3.1
 
