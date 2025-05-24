@@ -2,9 +2,9 @@ require "rails_helper"
 require "generators/securial/install/install_generator"
 
 RSpec.describe Securial::Generators::InstallGenerator, type: :generator do
-  let(:destination_root) { Pathname.new(File.expand_path("../../../../../tmp", __dir__)) }
+  let(:destination_root) { Securial::Engine.root.join("tmp") }
 
-  destination File.expand_path("../../../../../tmp", __FILE__)
+  destination Securial::Engine.root.join("tmp")
 
   before do
     prepare_destination
@@ -62,7 +62,7 @@ RSpec.describe Securial::Generators::InstallGenerator, type: :generator do
     it "creates the initializer file" do
       run_generator
 
-      assert_file "config/initializers/securial.rb" do |content|
+      assert_file File.join(destination_root, "config", "initializers", "securial.rb") do |content|
         assert_match(/Securial.configure do \|config\|/, content)
         assert_match(/config.log_to_file = true/, content)
         assert_match(/config.log_to_stdout = true/, content)
