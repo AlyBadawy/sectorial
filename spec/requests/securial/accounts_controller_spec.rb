@@ -4,8 +4,8 @@ RSpec.describe Securial::AccountsController, type: :request do
   let(:valid_attributes) {
     {
       email_address: "test@example.com",
-      password: "password",
-      password_confirmation: "password",
+      password: "passw0rD1!",
+      password_confirmation: "passw0rD1!",
       username: "test",
       first_name: "Test",
       last_name: "User",
@@ -169,7 +169,15 @@ RSpec.describe Securial::AccountsController, type: :request do
         context "with valid parameters" do
           it "updates the requested user" do
             put securial.update_profile_url,
-                params: { securial_user: { current_password: "password", first_name: "Updated", last_name: "One" } }, headers: @valid_headers, as: :json
+                params: {
+                  securial_user: {
+                    current_password: "Password_.1",
+                    first_name: "Updated",
+                    last_name: "One",
+                  },
+                },
+                headers: @valid_headers,
+                as: :json
             @signed_in_user.reload
             expect(@signed_in_user.first_name).to eq("Updated")
             expect(@signed_in_user.last_name).to eq("One")
@@ -177,14 +185,30 @@ RSpec.describe Securial::AccountsController, type: :request do
 
           it "renders a JSON response with the updated user" do
             put securial.update_profile_url,
-                params: { securial_user: { current_password: "password", first_name: "Updated", last_name: "Two" } }, headers: @valid_headers, as: :json
+                params: {
+                  securial_user: {
+                    current_password: "Password_.1",
+                    first_name: "Updated",
+                    last_name: "Two",
+                  },
+                },
+                headers: @valid_headers,
+                as: :json
             expect(response).to have_http_status(:ok)
             expect(response.content_type).to match(a_string_including("application/json"))
           end
 
           it "returns the updated user" do
             put securial.update_profile_url,
-                params: { securial_user: { current_password: "password", first_name: "Updated", last_name: "Three" } }, headers: @valid_headers, as: :json
+                params: {
+                  securial_user: {
+                    current_password: "Password_.1",
+                    first_name: "Updated",
+                    last_name: "Three",
+                  },
+                },
+                headers: @valid_headers,
+                as: :json
             res_body = JSON.parse(response.body)
             expect(res_body.keys).to include(*expected_keys)
             expect(res_body["first_name"]).to eq("Updated")
@@ -195,7 +219,15 @@ RSpec.describe Securial::AccountsController, type: :request do
         context "with invalid parameters" do
           it "renders a JSON response with errors for the user" do
             put securial.update_profile_url,
-                params: { securial_user: { current_password: "password", first_name: nil, last_name: nil } }, headers: @valid_headers, as: :json
+                params: {
+                  securial_user: {
+                    current_password: "Password_.1",
+                    first_name: nil,
+                    last_name: nil,
+                  },
+                },
+                headers: @valid_headers,
+                as: :json
             expect(response).to have_http_status(:unprocessable_entity)
             expect(response.content_type).to match(a_string_including("application/json"))
             res_body = JSON.parse(response.body)
@@ -204,7 +236,15 @@ RSpec.describe Securial::AccountsController, type: :request do
 
           it "does not update the user" do
             put securial.update_profile_url,
-                params: { securial_user: { current_password: "password", first_name: nil, last_name: nil } }, headers: @valid_headers, as: :json
+                params: {
+                  securial_user: {
+                    current_password: "Password_.1",
+                    first_name: nil,
+                    last_name: nil,
+                  },
+                },
+                headers: @valid_headers,
+                as: :json
             @signed_in_user.reload
             expect(@signed_in_user.first_name).not_to be_nil
             expect(@signed_in_user.last_name).not_to be_nil
@@ -215,7 +255,14 @@ RSpec.describe Securial::AccountsController, type: :request do
       context "with invalid current password" do
         it "renders a JSON response with an error message" do
           put securial.update_profile_url,
-              params: { securial_user: { current_password: "wrong_password", first_name: "Updated" } }, headers: @valid_headers, as: :json
+              params: {
+                securial_user: {
+                  current_password: "wrong_password",
+                  first_name: "Updated",
+                },
+              },
+              headers: @valid_headers,
+              as: :json
           expect(response).to have_http_status(:unprocessable_entity)
           expect(response.content_type).to match(a_string_including("application/json"))
           res_body = JSON.parse(response.body)
@@ -224,7 +271,14 @@ RSpec.describe Securial::AccountsController, type: :request do
 
         it "does not update the user" do
           put securial.update_profile_url,
-              params: { securial_user: { current_password: "wrong_password", first_name: "Updated" } }, headers: @valid_headers, as: :json
+              params: {
+                securial_user: {
+                  current_password: "wrong_password",
+                  first_name: "Updated",
+                },
+              },
+              headers: @valid_headers,
+              as: :json
           @signed_in_user.reload
           expect(@signed_in_user.first_name).not_to eq("Updated")
         end
@@ -236,13 +290,25 @@ RSpec.describe Securial::AccountsController, type: :request do
         it "deletes the user" do
           expect {
             delete securial.delete_account_url,
-                   params: { securial_user: { current_password: "password" } }, headers: @valid_headers, as: :json
+                   params: {
+                     securial_user: {
+                       current_password: "Password_.1",
+                     },
+                   },
+                   headers: @valid_headers,
+                   as: :json
           }.to change(Securial::User, :count).by(-1)
         end
 
         it "renders a JSON response with a success message" do
           delete securial.delete_account_url,
-                 params: { securial_user: { current_password: "password" } }, headers: @valid_headers, as: :json
+                 params: {
+                      securial_user: {
+                        current_password: "Password_.1",
+                      },
+                    },
+                 headers: @valid_headers,
+                 as: :json
           expect(response).to have_http_status(:ok)
           expect(response.content_type).to match(a_string_including("application/json"))
           res_body = JSON.parse(response.body)
@@ -253,7 +319,13 @@ RSpec.describe Securial::AccountsController, type: :request do
       context "with invalid current password" do
         it "renders a JSON response with an error message" do
           delete securial.delete_account_url,
-                 params: { securial_user: { current_password: "wrong_password" } }, headers: @valid_headers, as: :json
+                 params: {
+                   securial_user: {
+                     current_password: "wrong_password",
+                   },
+                 },
+                 headers: @valid_headers,
+                 as: :json
           expect(response).to have_http_status(:unprocessable_entity)
           expect(response.content_type).to match(a_string_including("application/json"))
           res_body = JSON.parse(response.body)
@@ -263,7 +335,13 @@ RSpec.describe Securial::AccountsController, type: :request do
         it "does not delete the user" do
           expect {
             delete securial.delete_account_url,
-                   params: { securial_user: { current_password: "wrong_password" } }, headers: @valid_headers, as: :json
+                   params: {
+                     securial_user: {
+                       current_password: "wrong_password",
+                     },
+                   },
+                   headers: @valid_headers,
+                   as: :json
           }.not_to change(Securial::User, :count)
         end
       end

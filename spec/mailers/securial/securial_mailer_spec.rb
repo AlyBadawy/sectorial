@@ -13,7 +13,7 @@ module Securial
       end
 
       it "renders the body" do
-        expect(mail.body.encoded).to match("You can reset your password within the next 15 minutes on")
+        expect(mail.body.encoded).to match("You can reset your password within the next 2 hours.")
       end
     end
   end

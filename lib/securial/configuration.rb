@@ -7,6 +7,11 @@ module Securial
     attr_accessor :session_secret, :session_algorithm
     attr_accessor :mailer_sender
     attr_accessor :password_reset_email_subject
+    attr_accessor :password_min_length, :password_max_length
+    attr_accessor :password_complexity
+    attr_accessor :password_expires_in
+    attr_accessor :reset_password_token_expires_in
+    attr_accessor :reset_password_token_secret
 
     def initialize
       @log_to_file = !Rails.env.test?
@@ -19,6 +24,12 @@ module Securial
       @session_algorithm = :hs256
       @mailer_sender = "no-reply@example.com"
       @password_reset_email_subject = "SECURIAL: Password Reset Instructions"
+      @password_min_length = 8
+      @password_max_length = 128
+      @password_complexity = Securial::RegexHelper::PASSWORD_REGEX
+      @password_expires_in = 90.days
+      @reset_password_token_expires_in = 2.hours
+      @reset_password_token_secret = "reset_secret"
     end
   end
 end

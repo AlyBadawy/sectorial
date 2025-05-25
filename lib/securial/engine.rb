@@ -14,6 +14,15 @@ module Securial
   class Engine < ::Rails::Engine
     isolate_namespace Securial
 
+    initializer "securial.filter_parameters" do |app|
+      app.config.filter_parameters += [
+        :password,
+        :password_confirmation,
+        :password_reset_token,
+        :reset_password_token
+      ]
+    end
+
     initializer "securial.logger" do
       Securial.const_set(:ENGINE_LOGGER, Securial::Logger.build)
     end

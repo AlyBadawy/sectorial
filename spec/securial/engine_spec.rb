@@ -28,6 +28,47 @@ RSpec.describe Securial::Engine do
       end
     end
 
+    describe "filter_parameters initializer" do
+      let(:app) { instance_double(Rails::Application, config: config) }
+      let(:initial_filter_parameters) { [:existing_param] }
+      let(:config) do
+        instance_double(Rails::Application::Configuration).tap do |c|
+          allow(c).to receive(:filter_parameters).and_return(initial_filter_parameters)
+          allow(c).to receive(:filter_parameters=) do |new_params|
+            # This simulates the += operation's behavior
+            initial_filter_parameters.replace(new_params)
+          end
+        end
+      end
+
+      it "adds sensitive parameters to filter_parameters" do
+        # Find the initializer we want to test
+        initializer = described_class.initializers.find { |i| i.name == "securial.filter_parameters" }
+        expect(initializer).to be_present
+
+        # Run the initializer
+        initializer.run(app)
+
+        # Verify that our sensitive parameters were added
+        sensitive_params = [
+          :password,
+          :password_confirmation,
+          :password_reset_token,
+          :reset_password_token
+        ]
+
+        sensitive_params.each do |param|
+          expect(initial_filter_parameters).to include(param)
+        end
+
+        # Ensure the existing parameters are preserved
+        expect(initial_filter_parameters).to include(:existing_param)
+
+        # Verify total count (1 existing + 4 new parameters)
+        expect(initial_filter_parameters.length).to eq(5)
+      end
+    end
+
     describe 'helper methods' do
       let(:base_controller) { ActionController::Base.new }
 

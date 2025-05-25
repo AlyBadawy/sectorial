@@ -71,14 +71,14 @@ RSpec.describe Securial::SessionsController, type: :request do
   end
 
   describe "POST '/login'" do
-    let(:new_user) { create(:securial_user, password: "password") }
+    let(:new_user) { create(:securial_user, password: "MyNewPassword!1", password_confirmation: "MyNewPassword!1") }
     let(:new_session) { create(:securial_session, user: new_user) }
     let(:new_valid_headers) {
       token = AuthHelper.encode(new_session)
       { "Authorization" => "Bearer #{token}" }
     }
     let(:valid_attributes) {
-      { email_address: new_user.email_address, password: "password" }
+      { email_address: new_user.email_address, password: "MyNewPassword!1" }
     }
 
     let(:invalid_attributes) {

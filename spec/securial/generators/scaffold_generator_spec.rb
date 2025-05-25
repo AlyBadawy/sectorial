@@ -92,7 +92,6 @@ RSpec.describe Securial::Generators::ScaffoldGenerator do
       end
 
       it "removes all generated files" do
-        # Remove the debugger line
         generator.run_scaffold
 
         expect(File).not_to exist(Rails.root.join("tmp/app/controllers/securial/posts_controller.rb"))
@@ -101,7 +100,6 @@ RSpec.describe Securial::Generators::ScaffoldGenerator do
       end
 
       it "removes routes from the routes file" do
-        # Remove the debugger line
         generator.run_scaffold
 
         routes_path = Rails.root.join("tmp/config/routes.rb")
