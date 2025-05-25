@@ -54,4 +54,14 @@ RSpec.configure do |config|
       with.library :rails
     end
   end
+
+  ActiveRecord::Schema.define do
+    create_table :test_users, force: true do |t|
+      t.string :email_address
+      t.string :password_digest
+      t.string :reset_password_token
+      t.datetime :reset_password_token_created_at
+      t.timestamps
+    end
+  end
 end

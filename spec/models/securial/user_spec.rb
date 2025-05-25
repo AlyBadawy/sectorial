@@ -75,36 +75,6 @@ module Securial
       end
     end
 
-    describe "password encryption" do
-      it "encrypts the password" do
-        my_user = described_class.create(email_address: "test@example.com", password: "password", password_confirmation: "password", username: "testUser", first_name: "Test", last_name: "User")
-        my_user.reload
-        expect(my_user.password_digest).not_to eq("password")
-      end
-
-      it "does not store the password in plain text" do
-        my_user = described_class.create(email_address: "test3@example.com", password: "password", password_confirmation: "password", username: "testUser", first_name: "Test", last_name: "User")
-
-        loaded_user = described_class.find(my_user.id)
-        expect(loaded_user.password).not_to eq("password")
-        expect(loaded_user.password_digest).not_to be_nil
-        expect(loaded_user.password_digest).not_to eq("password")
-      end
-    end
-
-    describe "authentication" do
-      it "has secure password" do
-        user = build(:securial_user)
-        expect(user).to respond_to(:authenticate)
-      end
-
-      it "authenticate user by password" do
-        user = FactoryBot.create(:securial_user, password: "secure_password", password_confirmation: "secure_password")
-        expect(described_class.authenticate_by(email_address: user.email_address, password: "invalid_password")).to be_nil
-        expect(described_class.authenticate_by(email_address: user.email_address, password: "secure_password")).to eq(user)
-      end
-    end
-
     describe '#is_admin?' do
       let(:user) { create(:securial_user) }
       let(:admin_role) { create(:securial_role, role_name: Securial.configuration.admin_role.to_s.strip.titleize) }

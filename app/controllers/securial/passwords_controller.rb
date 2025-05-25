@@ -5,6 +5,7 @@ module Securial
 
     def forgot_password
       if user = User.find_by(email_address: params.require(:email_address))
+        user.generate_reset_password_token!
         Securial::SecurialMailer.reset_password(user).deliver_later
       end
 
@@ -12,6 +13,7 @@ module Securial
     end
 
     def reset_password
+      @user.clear_reset_password_token!
       if @user.update(params.permit(:password, :password_confirmation))
         render status: :ok, json: { message: "Password has been reset." }
       else
@@ -22,7 +24,10 @@ module Securial
     private
 
     def set_user_by_password_token
-      @user = User.find_by_password_reset_token!(params[:token]) # rubocop:disable Rails/DynamicFindBy
+      @user = User.find_by_reset_password_token!(params[:token]) # rubocop:disable Rails/DynamicFindBy
+      unless @user.reset_password_token_valid?
+        render status: :unprocessable_entity, json: { errors: { token: "is invalid or has expired" } }
+      end
     rescue ActiveSupport::MessageVerifier::InvalidSignature, ActiveRecord::RecordNotFound
       render status: :unprocessable_entity, json: { errors: { token: "is invalid or has expired" } } and return
     end

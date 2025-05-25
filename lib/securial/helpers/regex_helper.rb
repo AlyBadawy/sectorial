@@ -2,6 +2,7 @@ module Securial
   module RegexHelper
     EMAIL_REGEX = URI::MailTo::EMAIL_REGEXP
     USERNAME_REGEX = /\A(?![0-9])[a-zA-Z](?:[a-zA-Z0-9]|[._](?![._]))*[a-zA-Z0-9]\z/
+    PASSWORD_REGEX = %r{\A(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])[a-zA-Z].*\z}
 
     module_function
 

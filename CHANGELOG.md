@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] https://github.com/AlyBadawy/Securial/compare/v0.3.1...main
+## [Unreleased]
 
 ### Added
 
@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add the SecurialMailer sender email address to Securial configuration
 - Add `Securial::RegexHelper`
 - Add `Securial::RouteInspector` helper with methods to print out the Engine routes.
+- Add reset password token expiration
 - Include the `Securial::Identity` in the application controller by default
 
 ### Changed
@@ -21,6 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use ERB for templates to pass codeQL
 - Refactor and extract Normalizing helpers
 - Renamed `Securial::JwtHelper` to `Securial::AuthHelper`
+
+### Security
+
+- The fields `reset_password_token` and `reset_password_token_created_at` are now filtered params
 
 ### Fixed
 
@@ -93,3 +98,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial project structure.
 - Basic Rails engine setup.
 - Core authentication functionality.
+
+---
+
+Unreleased: https://github.com/AlyBadawy/Securial/compare/v0.3.1...main \
+v0.3.1: https://github.com/AlyBadawy/Securial/compare/v0.3.0...v0.3.1

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_19_075407) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_24_210207) do
   create_table "securial_role_assignments", id: :string, force: :cascade do |t|
     t.string "user_id", null: false
     t.string "role_id", null: false
@@ -52,6 +52,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_19_075407) do
     t.string "bio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_token_created_at"
     t.index ["email_address"], name: "index_securial_users_on_email_address", unique: true
     t.index ["username"], name: "index_securial_users_on_username", unique: true
   end

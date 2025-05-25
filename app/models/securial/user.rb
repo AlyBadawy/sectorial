@@ -1,13 +1,16 @@
 module Securial
   class User < ApplicationRecord
-    has_secure_password
+    include Securial::PasswordResettable
 
     normalizes :email_address, with: ->(e) { Securial::NormalizingHelper.normalize_email_address(e) }
 
     validates :email_address,
               presence: true,
               uniqueness: true,
-              length: { minimum: 5, maximum: 255 },
+              length: {
+                minimum: 5,
+                maximum: 255,
+              },
               format: {
                 with: Securial::RegexHelper::EMAIL_REGEX,
                 message: "must be a valid email address",
@@ -43,7 +46,9 @@ module Securial
 
 
     def is_admin?
-      roles.exists?(role_name: Securial.configuration.admin_role.to_s.strip.titleize)
+      titleized_role_name = Securial.configuration.admin_role.to_s.strip.titleize
+
+      roles.exists?(role_name: titleized_role_name)
     end
   end
 end

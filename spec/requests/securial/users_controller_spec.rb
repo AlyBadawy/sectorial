@@ -5,8 +5,8 @@ RSpec.describe Securial::UsersController, type: :request do
   let(:valid_attributes) {
     {
       email_address: "test@example.com",
-      password: "password",
-      password_confirmation: "password",
+      password: "Pa$$w0rd",
+      password_confirmation: "Pa$$w0rd",
       username: "test",
       first_name: "Test",
       last_name: "User",
